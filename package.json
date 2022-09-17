@@ -2,8 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "serve": "vue-cli-service serve --https true"
+        "build": "vite build"
 
     },
     "devDependencies": {
