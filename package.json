@@ -4,6 +4,7 @@
         "dev": "vite",
         "build": "vite build",
         "serve": "vue-cli-service serve --https true"
+
     },
     "devDependencies": {
         "axios": "^0.27",
