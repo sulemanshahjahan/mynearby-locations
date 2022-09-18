@@ -128,7 +128,7 @@
       getAddressFrom(lat, long) {
         axios
           .get(
-            "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+            "https://mynearby-locations.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
               lat +
               "," +
               long +
