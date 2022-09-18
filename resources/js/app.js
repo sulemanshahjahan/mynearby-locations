@@ -14,5 +14,4 @@ import App from './layouts/App.vue'
 createApp(App)
     .use(router)
     .use(store)
-    .use(cors)
     .mount("#app")

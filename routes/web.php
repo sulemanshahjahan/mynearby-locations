@@ -19,5 +19,4 @@ Route::get('/{any}', function () {
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
-
+Route::get('/welcome', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
