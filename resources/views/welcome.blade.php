@@ -18,9 +18,12 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
   <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+  <script src="https://apis.google.com/js/api.js" type="text/javascript"></script>
 
-  <script  async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM">
+  <script  src="https://maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+<?php  header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS'); ?>
     </head>
     <body class="antialiased">
         <div id="app"></div>
