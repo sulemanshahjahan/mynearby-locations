@@ -3,7 +3,7 @@ import './bootstrap';
 import { createApp } from 'vue';
 import router from './router.js'
 import store from './store'
-var cors = require('cors')
+import cors from 'cors';
 
 
 import App from './layouts/App.vue'
