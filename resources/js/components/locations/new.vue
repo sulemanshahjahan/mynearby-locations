@@ -21,7 +21,7 @@
                 <p class="mb-1">Name</p>
                 <input type="text" class="input" >
 
-                <p class="my-1">Description (optional)</p>
+                <p class="my-1">Address (optional)</p>
                 <textarea cols="10" rows="5" class="textarea" ></textarea>
                 
                 <div class="products__create__main--media--images mt-2">
@@ -50,7 +50,7 @@
                 
                 <!-- Product unit -->
                 <div class="my-3">
-                    <p>Product type</p>
+                    <p>Longitude and Latitude</p>
                     <input type="text" class="input" >
                 </div>
                 <hr>
