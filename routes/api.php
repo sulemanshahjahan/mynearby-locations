@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\LocationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,8 @@ Route::controller(AuthController::class)->group(function(){
 
 Route::get('/nearby',  function  (Request $request)  {
     $url =  'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $request->lat. ',' . $request->long. '&key=AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM';
-   
     $json = json_decode(file_get_contents($url), true);
     return $json;
  });
+
+ Route::get('/get_all_locations', [LocationController::class , 'get_all_locations']);

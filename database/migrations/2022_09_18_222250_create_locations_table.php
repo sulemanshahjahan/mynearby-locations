@@ -17,10 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('longlat')->unique();
-            $table->string('address')->nullable();
+            $table->text('address')->nullable();
             $table->string('website')->nullable();
-            $table->string('email')->unique();
-            $table->string('phone')->unique(); 
+            $table->string('email');
+            $table->string('phone'); 
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

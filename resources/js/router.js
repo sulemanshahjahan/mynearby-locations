@@ -5,7 +5,10 @@ import register from './pages/register.vue';
 import login from './pages/login.vue';
 import dashboard from './pages/dashboard.vue';
 import nearby from './pages/nearby.vue';
+import locationIndex from './components/locations/index.vue';
+import locationNew from './components/locations/new.vue';
 import store from './store'
+import NotFound from './components/NotFound.vue'
 
 const routes = [
     {
@@ -42,6 +45,30 @@ const routes = [
             requiresAuth:true
         }
     },
+    {
+        path : '/location',
+        name : 'locationIndex',
+        props: true,
+        component : locationIndex
+    },
+    {
+        path : '/location/new',
+        name : 'locationNew',
+        props: true,
+        component : locationNew
+    },
+    {
+        path: '/:CatchAll(.*)',
+        name: 'NotFound',
+        component: NotFound,
+        props: true
+      },
+      {
+        path: '/404/:resource',
+        name: '404Resource',
+        component: NotFound,
+        props: true
+      },
 ]
 
 const router = createRouter({
