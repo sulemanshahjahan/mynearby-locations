@@ -32,10 +32,7 @@ const routes = [
     {
         path : '/nearby',
         name : 'Nearby',
-        component : nearby,
-        meta:{
-            requiresAuth:true
-        }
+        component : nearby
     },
     {
         path : '/dashboard',

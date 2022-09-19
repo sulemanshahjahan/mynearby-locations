@@ -1,6 +1,6 @@
 <template>
     <div class="ui grid">
-      <div class="six wide column">
+      <div class="six wide column locater">
         <form class="ui segment large form" @submit.prevent="findCloseBuyButtonPressed">
           <div class="ui message red" v-show="error">{{error}}</div>
           <div class="ui segment">
@@ -33,7 +33,7 @@
           </div>
         </form>
   
-        <div class="ui segment" style="max-height:500px;overflow:auto;">
+        <div class="ui segment list-holder">
           <div class="ui divided items">
             <div
               class="item"
@@ -46,13 +46,13 @@
               <div class="content">
                 <div class="header">{{place.name}}</div>
                 <div class="meta">{{place.vicinity}}</div>
-                <div class="placeID">{{place.place_id}}</div>
+                <div class="placeID hidden">{{place.place_id}}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="ten wide column" ref="map"></div>
+      <div class="ten wide column map-holder" ref="map"></div>
     </div>
   </template>
   
@@ -126,15 +126,9 @@
         }
       },
       getAddressFrom(lat, long) {
+        const url = `/api/nearby/?lat=${lat}&long=${long}`;
         axios
-          .get(
-            "https://mynearby-locations.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-              lat +
-              "," +
-              long +
-              "&key=" +
-              this.apiKey
-          )
+          .get(url)
           .then(response => {
             if (response.data.error_message) {
               this.error = response.data.error_message;
@@ -369,5 +363,31 @@
   
   .active {
     background: #ff5a5f !important;
+  }
+  .list-holder{
+    max-height:500px;overflow:auto; 
+  }
+  @media(max-width:767px){
+    .ui.grid>.column.locater{
+      width:100%  !important;
+    }
+    .list-holder{
+      height:250px;
+    }
+    .align-right{
+      margin-top:0;
+    }
+    .ui.grid>.column.map-holder{
+      width:100% !important;
+      height:250px;
+    }
+    li.nav-item{
+      display:inline-block;
+    }
+    ul.navbar-nav {
+    display: inline-block !important;
+    width: 66%  !important;
+    text-align: center  !important;
+}
   }
   </style>

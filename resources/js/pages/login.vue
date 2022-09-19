@@ -42,6 +42,7 @@
                         store.dispatch('setToken',res.data.data.token);
                         router.push({name:'Dashboard'})
                     }else{
+
                         error.value = res.data.message;
                     }
                 })

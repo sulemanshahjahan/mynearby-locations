@@ -23,3 +23,10 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('login','login');
     Route::post('register','register');
 });
+
+Route::get('/nearby',  function  (Request $request)  {
+    $url =  'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $request->lat. ',' . $request->long. '&key=AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM';
+   
+    $json = json_decode(file_get_contents($url), true);
+    return $json;
+ });

@@ -13,7 +13,7 @@
                 <router-link class="text-white ml-2" :to="{name : 'Dashboard' }" v-if="$store.getters.getToken != 0"> Dashboard</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="text-white ml-2" :to="{name : 'Nearby' }" v-if="$store.getters.getToken != 0"> Nearby Things</router-link>
+                <router-link class="text-white ml-2" :to="{name : 'Nearby' }" > Nearby Things</router-link>
             </li>
 
         </ul>
