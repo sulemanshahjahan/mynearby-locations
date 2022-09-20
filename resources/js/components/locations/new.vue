@@ -56,7 +56,7 @@
                 form.value.website = '',
                 form.value.phone = '',
 
-                router.push({name: 'locationIndex'})
+                router.push({name: 'Dashboard'})
 
                 toast.fire({
                     icon:"success",
