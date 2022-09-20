@@ -1,11 +1,21 @@
 import './bootstrap';
-
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/dist/sweetalert2.css';
 import { createApp } from 'vue';
 import router from './router.js'
 import store from './store';
 
+window.Swal = Swal;
+const toast = Swal.mixin({
+    toast:true,
+    position:'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timeProgerssBar: true,
+})
 
-import cors from 'cors' ;  
+window.toast = toast;
+
 
 
 

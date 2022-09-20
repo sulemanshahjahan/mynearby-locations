@@ -32,3 +32,7 @@ Route::get('/nearby',  function  (Request $request)  {
  });
 
  Route::get('/get_all_locations', [LocationController::class , 'get_all_locations']);
+ Route::post('/add_location', [LocationController::class, 'add_location']);
+ Route::get('/get_edit_location/{id}', [LocationController::class, 'get_edit_location']);
+ Route::post('/update_location/{id}', [LocationController::class, 'update_location']);
+ Route::get('/delete_location/{id}', [LocationController::class, 'delete_location']);

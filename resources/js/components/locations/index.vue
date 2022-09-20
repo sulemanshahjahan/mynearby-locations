@@ -1,5 +1,7 @@
 <script setup>
     import axios from 'axios';
+
+
 import { onMounted, ref } from 'vue';
 import router from '../../router';
 
@@ -10,7 +12,7 @@ import router from '../../router';
     })
 
     const newLocation = () => {
-        router.push('/locations/new');
+        router.push('/location/new');
     }
     
     const getLocations = async () => {
@@ -26,10 +28,44 @@ import router from '../../router';
     const ourImage = (img) => {
         return "/upload/" + img
     }
+
+    const onEdit = (id) => {
+        router.push({ name: 'locationEdit', params: { id: id } })
+    }
+
+    const deleteLocation = (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You can't go back.",
+            icon: "warning",
+            showCancelButton: true, 
+            confirmButtonColor: "#ed143d",
+            cancelButtonText: "Cancel",
+            confirmButtonText: "Yes delete it!"
+        })
+        .then((result) => {
+            if(result.value){
+                axios.get('/api/delete_location/'+id)
+                .then(()=>{
+                    Swal.fire(
+                        'Delete',
+                        'Location deleted successfully',
+                        'success'
+                    )
+
+                    getLocations();
+                })
+                .catch((error) => {
+                   Swal.fire('Failed!', "Something went wrong.", "Warning");     
+                })
+            }
+        })
+    }
+
 </script>
 
 <template>
-    <div class="container">
+    <div class="">
         <div class="products__list table  my-3">
               
               <div class="customers__titlebar dflex justify-content-between align-items-center">
@@ -58,14 +94,14 @@ import router from '../../router';
                   <div class="products__list__item--imgWrapper">
                       <img class="products__list__item--img" :src="ourImage(item.photo)"  style="height: 40px;" v-if="item.photo">
                   </div>
-                  <a href="# " class="table--items--col2">{{item.title}}</a>
+                  <a href="# " class="table--items--col2" @click="onEdit(item.id)">{{item.title}}</a>
                   <p class="table--items--col2">{{item.address}}</p>
                   <p class="table--items--col3">{{item.email}}</p>     
                   <div>     
-                      <button class="btn-icon btn-icon-success" >
+                      <button class="btn-icon btn-icon-success" @click="onEdit(item.id)">
                           <i class="fas fa-pencil-alt"></i>
                       </button>
-                      <button class="btn-icon btn-icon-danger" >
+                      <button class="btn-icon btn-icon-danger" @click="deleteLocation(item.id)">
                           <i class="far fa-trash-alt"></i>
                       </button>
                   </div>

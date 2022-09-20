@@ -7,6 +7,7 @@ import dashboard from './pages/dashboard.vue';
 import nearby from './pages/nearby.vue';
 import locationIndex from './components/locations/index.vue';
 import locationNew from './components/locations/new.vue';
+import locationEdit from './components/locations/edit.vue';
 import store from './store'
 import NotFound from './components/NotFound.vue'
 
@@ -46,7 +47,7 @@ const routes = [
         }
     },
     {
-        path : '/location',
+        path : '/locations',
         name : 'locationIndex',
         props: true,
         component : locationIndex
@@ -56,6 +57,12 @@ const routes = [
         name : 'locationNew',
         props: true,
         component : locationNew
+    },
+    {
+        path : '/location/edit/:id',
+        name : 'locationEdit',
+        props: true,
+        component : locationEdit
     },
     {
         path: '/:CatchAll(.*)',
