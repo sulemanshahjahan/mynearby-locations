@@ -116,3 +116,8 @@ import router from '../../router';
     </div>
 </template>
 
+<style scoped>
+h1.my-1{
+    color:#fff;
+}
+</style>

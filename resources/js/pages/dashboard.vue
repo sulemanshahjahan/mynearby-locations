@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h2>Dashboard : </h2>
+
         <Locations></Locations>
         <button type="button" class="btn btn-dark mt-2" @click="logout">Logout</button>
     </div>
