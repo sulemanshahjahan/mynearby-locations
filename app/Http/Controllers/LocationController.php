@@ -89,4 +89,11 @@ class LocationController extends Controller
 
         $location->delete();
     }
+
+    public function get_single_location($id){
+        $location = Locations::find($id);
+        return response()->json([
+            'location' => $location
+        ],222);
+    }
 }

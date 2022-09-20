@@ -30,9 +30,17 @@ Route::get('/nearby',  function  (Request $request)  {
     $json = json_decode(file_get_contents($url), true);
     return $json;
  });
+ Route::get('/no_permission_location',  function  (Request $request)  {
+    $url =  'https://www.geolocation-db.com/json/';
+    $json = json_decode(file_get_contents($url), true);
+    return $json;
+ });
+
+ 
 
  Route::get('/get_all_locations', [LocationController::class , 'get_all_locations']);
  Route::post('/add_location', [LocationController::class, 'add_location']);
+ Route::get('/get_single_location/{id}', [LocationController::class, 'get_single_location']);
  Route::get('/get_edit_location/{id}', [LocationController::class, 'get_edit_location']);
  Route::post('/update_location/{id}', [LocationController::class, 'update_location']);
  Route::get('/delete_location/{id}', [LocationController::class, 'delete_location']);

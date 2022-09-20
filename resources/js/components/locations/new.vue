@@ -1,5 +1,5 @@
 <script setup>
-    import {ref} from 'vue';
+    import { onMounted, ref} from 'vue';
     import router from '../../router';
     let form = ref({
         title: '',
@@ -10,6 +10,8 @@
         phone: '',
         website: ''
     });
+
+    let locAddress = '';
 
     const getPhoto = () => {
         let photo = '/upload/image.png';
@@ -68,6 +70,30 @@
                 console.error(error);
             })
     }
+
+
+    const el = ref({
+        address: '',
+    })
+   
+onMounted(() => {
+  console.log(el.value)
+  const autocomplete = new google.maps.places.Autocomplete(
+    el.value,
+        {
+          bounds: new google.maps.LatLngBounds(
+            new google.maps.LatLng(45.4215296, -75.6971931)
+          )
+        }
+      );
+   
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+       // form.address = place.formatted_address;
+        jQuery('.longlat').val( place.geometry.location.lat() + ', ' + place.geometry.location.lat());
+      });
+
+})
 </script>
 
 <template>
@@ -94,7 +120,7 @@
                 <input type="text" class="input" v-model="form.title">
 
                 <p class="my-1">Address (optional)</p>
-                <textarea cols="10" rows="5" class="textarea" v-model="form.address"></textarea>
+                <input  v-model="form.address" class="input"  ref="el">
                 
                 <div class="products__create__main--media--images mt-2">
                    <ul class="products__create__main--media--images--list list-unstyled">
@@ -123,7 +149,7 @@
                 <!-- Product unit -->
                 <div class="my-3">
                     <p>Longitude and Latitude</p>
-                    <input type="text" class="input" v-model="form.longlat">
+                    <input type="text" class="input longlat" v-model="form.longlat" >
                 </div>
                 <hr>
 

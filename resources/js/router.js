@@ -8,8 +8,9 @@ import nearby from './pages/nearby.vue';
 import locationIndex from './components/locations/index.vue';
 import locationNew from './components/locations/new.vue';
 import locationEdit from './components/locations/edit.vue';
-import store from './store'
-import NotFound from './components/NotFound.vue'
+import dealerLocator from './components/dealerLocator.vue';
+import store from './store';
+import NotFound from './components/NotFound.vue';
 
 const routes = [
     {
@@ -63,6 +64,11 @@ const routes = [
         name : 'locationEdit',
         props: true,
         component : locationEdit
+    },
+    {
+        path: '/dealers',
+        name: 'dealerLocator',
+        component: dealerLocator
     },
     {
         path: '/:CatchAll(.*)',
