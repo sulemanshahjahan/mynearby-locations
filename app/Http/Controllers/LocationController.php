@@ -34,10 +34,10 @@ class LocationController extends Controller
             $img->save($upload_path.$name);
             $location->photo = $name;
         }else{
-            $product->photo = "image.jpg";
+            $location->photo = "image.png";
         }
 
-        $location->photo = $name;
+        
         $location->save();
     }
     
