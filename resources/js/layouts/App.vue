@@ -1,7 +1,7 @@
 <template>
 
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <router-link class="navbar-brand" :to="{name :'Home' }">Home </router-link>
+        <router-link class="navbar-brand" :to="{name :'List' }">Home </router-link>
         <ul class="navbar-nav">
             <li class="nav-item">
                 <router-link class="text-white" :to="{name : 'Login' }" v-if="$store.getters.getToken == 0">Login</router-link>

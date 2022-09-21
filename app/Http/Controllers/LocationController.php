@@ -129,4 +129,14 @@ class LocationController extends Controller
             'location' => $location
         ],222);
     }
+
+    public function get_close_locations($idArray){
+
+       // $location = Locations::whereIn('id', [$id])->get();
+       $array = explode('-', $idArray);
+       $location = Locations::whereIn('id', $array)->get();
+       return response()->json([
+           'location' => $location
+       ],222);
+    }
 }

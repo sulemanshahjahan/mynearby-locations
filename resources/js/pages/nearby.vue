@@ -246,6 +246,7 @@
      
           this.resetMarkers();
             closest_markers.map((item, index) => {
+              console.log(item.distance);
               if(item.distance < 5000){
                   if(index > 0){
                     newLocations.push('place_id='+item.marker.placeID);

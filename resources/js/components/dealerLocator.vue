@@ -32,7 +32,7 @@
           </div>
         </form>
 
-            <div class="locations" v-if="locations.length > 0">
+            <div class="locations" v-if="locations && locations.length > 0">
              <dealerCards  class="item"
               v-for="(dealer, index) in locations"
               :key="dealer.id"
@@ -63,6 +63,7 @@
 
 <script>
 import axios from 'axios';
+import { onUpdated } from 'vue';
 import dealerCards from './locations/dealerCard.vue';
 
     export default{
@@ -94,7 +95,6 @@ import dealerCards from './locations/dealerCard.vue';
       next(comp => {
         comp.locations = response.data.locations
         comp.totalLocations = response.headers['x-total-count'];
-        console.log(response.data.locations);
       })
     })
     .catch(error => {
@@ -105,6 +105,7 @@ import dealerCards from './locations/dealerCard.vue';
         }
       })
   },
+
         mounted() {
       const autocomplete = new google.maps.places.Autocomplete(
         this.$refs["autocomplete"],
@@ -149,7 +150,7 @@ import dealerCards from './locations/dealerCard.vue';
                 
             },  
             locatorButtonPressed(){
-              this.resetMarkers();
+             
                 this.spinner = true;
                 if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -180,9 +181,10 @@ import dealerCards from './locations/dealerCard.vue';
         }
             },
             findCloseBuyButtonPressed(markers, n = 12) {
-              this.resetMarkers();
               
-              var markers_distances = [];
+              this.getAllLocations();
+            
+      var markers_distances = [];
       var newLocations = [];
       for (let i = 0; i < markers.length; i++) {
         
@@ -196,20 +198,27 @@ import dealerCards from './locations/dealerCard.vue';
         console.log(markers_distances.sort((a, b) => {return a.distance-b.distance}));
       var closest_markers = markers_distances.sort((a, b) => {return a.distance-b.distance}).slice(0,n)
      
-          this.resetMarkers();
+          
             closest_markers.map((item, index) => {
-              console.log(item.distance);
+              if(item.distance < 5000){
+                  
+                    newLocations.push(item.marker.placeID);
+              }else{
+                //$(".header:contains('"+ item.marker.title +"')").parents('.item').remove();
+                //item.marker.setMap(null);
+              }
               
             })
 
-        const URL = `/api/get_all_locations`;
-  
+       const $idArray = newLocations.join('-');    
+      
+        const URL = `/api/get_close_locations/${$idArray}`;
         return axios
           .get(URL)
           .then(response => {
-            console.log(response.data.locations);
-            this.locations = response.data.locations;
-            this.showPlacesOnMap(this.lat, this.lng, this.locations);
+
+            this.locations = response.data.location;
+            this.showPlacesOnMap(this.lat, this.lng, this.location);
             
           })
           .catch(error => {
@@ -220,6 +229,22 @@ import dealerCards from './locations/dealerCard.vue';
         
         this.markers= [];
         
+       },
+       getAllLocations (){
+        this.locations = [];
+        
+         axios.get('/api/get_all_locations')
+    .then(response => {
+      console.log(response.data.locations);
+      this.locations = response.data.locations;
+    })
+    .catch(error => {
+        if (error.response && error.response.status == 404) {
+          return({ name: '404Resource', params: { resource: 'pair' } })
+        } else {
+         return ({ name: 'NetworkError' })
+        }
+      })
        },
             getAddressFrom(lat, long) {
                 
@@ -245,7 +270,7 @@ import dealerCards from './locations/dealerCard.vue';
         },
         showPlacesOnMap(lat, long, index){
 
-          
+          this.markers = [];
 
             const map = new google.maps.Map(this.$refs["map"], {
           zoom: 11,
@@ -323,7 +348,7 @@ console.log(response.data);
         },
         showInfoWindow(index) {
         this.activeIndex = index;
-        console.log( this.markers[index]);
+        console.log( this.markers[index].title);
         new google.maps.event.trigger(this.markers[index], "click");
       }
         }

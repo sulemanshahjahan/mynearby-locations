@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import home from './pages/home.vue';
+
 import register from './pages/register.vue';
 import login from './pages/login.vue';
 import dashboard from './pages/dashboard.vue';
@@ -9,14 +9,15 @@ import locationIndex from './components/locations/index.vue';
 import locationNew from './components/locations/new.vue';
 import locationEdit from './components/locations/edit.vue';
 import dealerLocator from './components/dealerLocator.vue';
+import List from './components/list.vue';
 import store from './store';
 import NotFound from './components/NotFound.vue';
 
 const routes = [
     {
         path : '/',
-        name : 'Home',
-        component : home
+        name : 'List',
+        component : List
     },
     {
         path : '/login',
