@@ -5,6 +5,7 @@
         title: '',
         address: '',
         photo: '',
+        marker_icon: '',
         longlat: '',
         email: '',
         phone: '',
@@ -38,6 +39,33 @@
         reader.readAsDataURL(file);
     }
 
+
+    const getMarkerIcon = () => {
+        let marker_icon = '/upload/image.png';
+        if(form.value.marker_icon){
+            if(form.value.marker_icon.indexOf('base64') != -1){
+                marker_icon = form.value.marker_icon;
+            }else{
+                marker_icon = '/upload/' + form.value.marker_icon
+            }
+        }
+        return marker_icon;
+    }
+
+    const updateMarkerIcon = (e) => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        let limit = 1024 * 1024 * 2;
+        if(file['size' > limit]){
+            return false
+        }
+        reader.onloadend = (file) => {
+            form.value.marker_icon = reader.result;
+        }
+
+        reader.readAsDataURL(file);
+    }
+
     const saveLocation = () => {
         const formData = new FormData();
         formData.append('title', form.value.title);
@@ -45,6 +73,7 @@
         formData.append('longlat', form.value.longlat);
         formData.append('email', form.value.email);
         formData.append('photo', form.value.photo);
+        formData.append('marker_icon', form.value.marker_icon);
         formData.append('phone', form.value.phone);
         formData.append('website', form.value.website);
     
@@ -54,6 +83,7 @@
                 form.value.address = '',
                 form.value.longlat = '',
                 form.value.photo = '',
+                form.value.marker_icon = '',
                 form.value.email = '',
                 form.value.website = '',
                 form.value.phone = '',
@@ -73,7 +103,7 @@
 
 
     const el = ref({
-        address: '',
+        locAddress: '',
     })
    
 onMounted(() => {
@@ -90,7 +120,32 @@ onMounted(() => {
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
        // form.address = place.formatted_address;
-        jQuery('.longlat').val( place.geometry.location.lat() + ', ' + place.geometry.location.lat());
+
+
+          // Find inputs
+        const input = $("input[name='address']");
+
+        // Set value
+        input.val(jQuery('#specific').val());
+
+        // Create native event
+        const event = new Event('input', { bubbles: true });
+
+        // Dispatch the event on "native" element
+        input.get(0).dispatchEvent(event);
+
+          // Find inputs
+        const longlatput = $("input[name='longlat']");
+
+        // Set value
+        longlatput.val(place.geometry.location.lat() + ', ' + place.geometry.location.lng());
+
+        // Create native event
+        const longlatevent = new Event('input', { bubbles: true });
+
+        // Dispatch the event on "native" element
+        longlatput.get(0).dispatchEvent(longlatevent);
+
       });
 
 })
@@ -112,7 +167,9 @@ onMounted(() => {
             </button>
         </div>
     </div>
-
+    
+        
+    
     <div class="products__create__cardWrapper mt-2">
         <div class="products__create__main">
             <div class="products__create__main--addInfo card py-2 px-2 bg-white">
@@ -120,7 +177,8 @@ onMounted(() => {
                 <input type="text" class="input" v-model="form.title">
 
                 <p class="my-1">Address (optional)</p>
-                <input  v-model="form.address" class="input"  ref="el">
+                <input   class="input" id="specific" ref="el">
+                <input  v-model="form.address" name="address" class="input addresss"  >
                 
                 <div class="products__create__main--media--images mt-2">
                    <ul class="products__create__main--media--images--list list-unstyled">
@@ -138,6 +196,24 @@ onMounted(() => {
                        </li>
                    </ul>
                </div>
+
+               <div class="products__create__main--media--images mt-2">
+                    <h4>Marker</h4>
+                   <ul class="products__create__main--media--images--list list-unstyled">
+                       <li class="products__create__main--media--images--item">
+                           <div class="products__create__main--media--images--item--imgWrapper">
+                               <img class="products__create__main--media--images--item--img" :src="getMarkerIcon()" alt="" />  
+                           </div>
+                       </li>
+                       <!-- upload image small -->
+                       <li class="products__create__main--media--images--item">
+                           <form class="products__create__main--media--images--item--form">
+                               <label class="products__create__main--media--images--item--form--label" for="myfile">Add Image</label>
+                               <input class="products__create__main--media--images--item--form--input" type="file" @change="updateMarkerIcon" id="myfile" >
+                           </form>
+                       </li>
+                   </ul>
+               </div>
            
             </div>
 
@@ -149,7 +225,7 @@ onMounted(() => {
                 <!-- Product unit -->
                 <div class="my-3">
                     <p>Longitude and Latitude</p>
-                    <input type="text" class="input longlat" v-model="form.longlat" >
+                    <input type="text" class="input longlat" name="longlat" v-model="form.longlat" >
                 </div>
                 <hr>
 

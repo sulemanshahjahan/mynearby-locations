@@ -1,10 +1,13 @@
 <template>
 
               <div class="content">
-                <div class="header">{{dealer.title}}</div>
-                <div class="meta">{{dealer.address}}</div>
-                <img v-if="dealer.photo" :src="ourImage(dealer.photo)" width="100" height="100">
-  
+                <div class="row">
+                <div class="col"> <img v-if="dealer.photo" :src="ourImage(dealer.photo)" width="100" height="100"></div>
+                <div class="col-8">
+                <div class="header"><h2>{{dealer.title}}</h2></div>
+                <div class="meta"><i class="fa fa-globe" aria-hidden="true"></i> {{dealer.address}}</div>
+              </div>
+            </div>
               </div>
             
 </template>
@@ -35,5 +38,7 @@ export default {
 <style scoped>
     .content{
         background:#111;
+        margin-bottom: 10px;
+
     }
 </style>

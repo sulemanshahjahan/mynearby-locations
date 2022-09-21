@@ -24,6 +24,19 @@ class LocationController extends Controller
         $location->phone = $request->phone;
         $location->website = $request->website;
 
+        if($request->marker_icon != ""){
+            $strpos = strpos($request->marker_icon, ';');
+            $sub = substr($request->marker_icon,0,$strpos);
+            $ex = explode('/',$sub)[1];
+            $name = time().".".$ex;
+            $img = Image::make($request->marker_icon)->resize(50,50);
+            $upload_path = public_path()."/upload/";
+            $img->save($upload_path.$name);
+            $location->marker_icon = $name;
+        }else{
+            $location->marker_icon = "marker.png";
+        }
+
         if($request->photo != ""){
             $strpos = strpos($request->photo, ';');
             $sub = substr($request->photo,0,$strpos);
@@ -36,7 +49,6 @@ class LocationController extends Controller
         }else{
             $location->photo = "image.png";
         }
-
         
         $location->save();
     }
@@ -58,6 +70,22 @@ class LocationController extends Controller
         $location->phone = $request->phone;
         $location->website = $request->website;
 
+        if($location->marker_icon != $request->marker_icon){
+            $strpos = strpos($request->marker_icon, ';');
+            $sub = substr($request->marker_icon,0,$strpos);
+            $ex = explode('/',$sub)[1];
+            $marker_name = time().".".$ex;
+            $img = Image::make($request->marker_icon)->resize(200,200);
+            $upload_path = public_path()."/upload/";
+            $image = $upload_path. $location->marker_icon;
+            $img->save($upload_path.$name);
+            if(file_exists($image)){
+                @unlink($image);
+            }
+        }else{
+            $marker_name = $location->marker_icon;
+        }
+
         if($location->photo != $request->photo){
             $strpos = strpos($request->photo, ';');
             $sub = substr($request->photo,0,$strpos);
@@ -75,6 +103,7 @@ class LocationController extends Controller
         }
 
         $location->photo = $name;
+        $location->marker_icon = $marker_name;
         $location->save();
 
     }
@@ -83,8 +112,12 @@ class LocationController extends Controller
         $location = Locations::findOrFail($id);
         $image_path = public_path()."/upload/";
         $image = $image_path . $location->photo;
+        $marker_image = $image_path . $location->marker_icon;
         if(file_exists($image)){
             @unlink($image);
+        }
+        if(file_exists($marker_image)){
+            @unlink($marker_image);
         }
 
         $location->delete();

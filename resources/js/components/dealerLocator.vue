@@ -1,7 +1,7 @@
 <template>
         <div class="row">
             <div class="col">
-                <form class="ui segment large form" >
+              <form class="ui segment large form" @submit.prevent="findCloseBuyButtonPressed(markers)">
           <div class="ui segment">
             <div class="field">
               <div class="ui right icon input large padding0" :class="{loading:spinner}">
@@ -32,13 +32,17 @@
           </div>
         </form>
 
-            <dealerCards  class="item"
+            <div class="locations" v-if="locations.length > 0">
+             <dealerCards  class="item"
               v-for="(dealer, index) in locations"
               :key="dealer.id"
               @click="showInfoWindow(index)"
               :class="{'active' : activeIndex === index}"
               style="padding:10px;" :dealer="dealer"></dealerCards>
-
+              </div>
+            <div class="noLocMessage" v-else>
+                <h4>No dealers available at this location.</h4>
+            </div>
             </div>
             <div class="col-9">
                 <div class="ten wide column map-holder" ref="map"></div>
@@ -46,6 +50,12 @@
         </div>
 </template>
 <style scoped>
+  .noLocMessage{
+    background-color: white;
+    color:#111;
+    padding:20px;
+    text-align:center;
+  }
     .padding0{
         padding:0;
     }
@@ -117,12 +127,12 @@ import dealerCards from './locations/dealerCard.vue';
     },
         methods:{
             getLocationNoPermission(){
-
                  axios.get('/api/no_permission_location')
                 .then((response) => {
                     const curaddress = response.data.city + ' ' + response.data.state + ' ' + response.data.country_name;
                     this.address = curaddress; 
-
+                    this.lat = response.data.latitude;
+                    this.lng = response.data.longitude;
                     this.getAddressFrom(
                         parseFloat(response.data.latitude),
                         parseFloat(response.data.longitude),
@@ -139,6 +149,7 @@ import dealerCards from './locations/dealerCard.vue';
                 
             },  
             locatorButtonPressed(){
+              this.resetMarkers();
                 this.spinner = true;
                 if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
@@ -168,6 +179,48 @@ import dealerCards from './locations/dealerCard.vue';
           console.log("Your browser does not support geolocation API ");
         }
             },
+            findCloseBuyButtonPressed(markers, n = 12) {
+              this.resetMarkers();
+              
+              var markers_distances = [];
+      var newLocations = [];
+      for (let i = 0; i < markers.length; i++) {
+        
+          var d = google.maps.geometry.spherical.computeDistanceBetween(markers[i].position, new google.maps.LatLng(this.lat, this.lng));
+          markers_distances[i] = {
+              distance: d, 
+              marker: markers[i]
+          }
+         // console.log( markers_distances[i]);
+      }
+        console.log(markers_distances.sort((a, b) => {return a.distance-b.distance}));
+      var closest_markers = markers_distances.sort((a, b) => {return a.distance-b.distance}).slice(0,n)
+     
+          this.resetMarkers();
+            closest_markers.map((item, index) => {
+              console.log(item.distance);
+              
+            })
+
+        const URL = `/api/get_all_locations`;
+  
+        return axios
+          .get(URL)
+          .then(response => {
+            console.log(response.data.locations);
+            this.locations = response.data.locations;
+            this.showPlacesOnMap(this.lat, this.lng, this.locations);
+            
+          })
+          .catch(error => {
+            this.error = error.message;
+          });
+      },
+      resetMarkers(){
+        
+        this.markers= [];
+        
+       },
             getAddressFrom(lat, long) {
                 
         const url = `/api/nearby/?lat=${lat}&long=${long}`;
@@ -192,9 +245,20 @@ import dealerCards from './locations/dealerCard.vue';
         },
         showPlacesOnMap(lat, long, index){
 
+          
+
             const map = new google.maps.Map(this.$refs["map"], {
-          zoom: 15,
+          zoom: 11,
           center: new google.maps.LatLng(lat, long),
+          disableDefaultUI: true,
+          mapTypeControlOptions: {
+      style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+      position: google.maps.ControlPosition.BOTTOM_CENTER,
+    },
+	fullscreenControlOptions: {
+		  position: google.maps.ControlPosition.LEFT_BOTTOM,
+	},
+      
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
@@ -204,15 +268,30 @@ import dealerCards from './locations/dealerCard.vue';
           const placeID  = this.locations[i].id;
           const str = this.locations[i].longlat;
           const arr = str.split(',');
+         let iconPhoto = '/upload/' + this.locations[i].marker_icon
+          if(iconPhoto == null || iconPhoto == '/upload/image.png'){
+            iconPhoto = '/upload/marker.png';
+          }
           
+
+          const icon = {
+            url: iconPhoto, // url
+            scaledSize: new google.maps.Size(50, 50), // scaled size
+            origin: new google.maps.Point(0,0), // origin
+            anchor: new google.maps.Point(0, 0) // anchor
+        };
+
+
           const marker = new google.maps.Marker({
             position: new google.maps.LatLng(arr[0], arr[1]),
             map: map,
             title: this.locations[i].title,
+            icon: icon,
             placeID:  this.locations[i].id
           });
   
           this.markers.push(marker);
+          
           google.maps.event.addListener(marker, "click", async () => {
           
          
@@ -229,26 +308,22 @@ import dealerCards from './locations/dealerCard.vue';
 console.log(response.data);
   const place = response.data.location;
   infoWindow.setContent(
-  `<div class="ui header">${place.title}</div>
+                  `<div class="ui header">${place.title}</div>
                     ${place.address} <br>
-                    
-                    <a href="${place.website}" target="_blank">${place.website}</a>
-                    
-                    
-                    `
-  );
-  infoWindow.open(map, marker);
-  }
-  } catch (error) {
-  this.error = error.message;
-  }
+                    <a href="${place.website}" target="_blank">${place.website}</a>`
+          );
+          infoWindow.open(map, marker);
+          }
+          } catch (error) {
+          this.error = error.message;
+          }
           });
         }
-        console.log(this.markers);
+
         },
         showInfoWindow(index) {
         this.activeIndex = index;
-        console.log(this.markers[index]);
+        console.log( this.markers[index]);
         new google.maps.event.trigger(this.markers[index], "click");
       }
         }

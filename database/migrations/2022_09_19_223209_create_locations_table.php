@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('email');
             $table->string('phone'); 
+            $table->string('marker_icon')->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();
         });
