@@ -36,7 +36,7 @@
              <dealerCards  class="item"
               v-for="(dealer, index) in locations"
               :key="dealer.id"
-              @click="showInfoWindow(index)"
+              :data-id="dealer.id"
               :class="{'active' : activeIndex === index}"
               style="padding:10px;" :dealer="dealer"></dealerCards>
               </div>
@@ -270,7 +270,7 @@ import dealerCards from './locations/dealerCard.vue';
         },
         showPlacesOnMap(lat, long, index){
 
-          this.markers = [];
+      
 
             const map = new google.maps.Map(this.$refs["map"], {
           zoom: 11,

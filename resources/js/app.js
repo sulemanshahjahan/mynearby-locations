@@ -5,6 +5,7 @@ import { createApp } from 'vue';
 import router from './router.js'
 import store from './store';
 
+
 window.Swal = Swal;
 const toast = Swal.mixin({
     toast:true,
@@ -16,10 +17,13 @@ const toast = Swal.mixin({
 
 window.toast = toast;
 
+const infoWindows = new google.maps.InfoWindow();
+window.infowindow = infoWindows;
 
-
-
+var gmarkers = [];
+window.gmarkers = gmarkers;
 import App from './layouts/App.vue'
+
 
 createApp(App)
     .use(router)

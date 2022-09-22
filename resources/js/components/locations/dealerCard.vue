@@ -1,6 +1,6 @@
 <template>
 
-              <div class="content">
+              <div class="content" :id="dealer.id">
                 <div class="row">
                 <div class="col"> <img v-if="dealer.photo" :src="ourImage(dealer.photo)" width="100" height="100"></div>
                 <div class="col-8">

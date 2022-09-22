@@ -36,8 +36,8 @@
          <dealerCards  class="item"
           v-for="(dealer, index) in locations"
           :key="dealer.id"
-          @click="showInfoWindow(index)"
-          :class="{'active' : activeIndex === index}"
+          @click="showInfoWindow(dealer.id)"
+          :class="{'active' : activeIndex === dealer.id}"
           style="padding:10px;" :dealer="dealer"></dealerCards>
           </div>
         <div class="noLocMessage" v-else>
@@ -74,7 +74,9 @@ import dealerCards from './locations/dealerCard.vue';
             lat:0,
             lng: 0,
             markers: [],
-            activeIndex: -1
+            activeIndex: -1,
+            map: null,
+            infoWindow: new google.maps.InfoWindow()
 
           }  
         },
@@ -95,6 +97,7 @@ import dealerCards from './locations/dealerCard.vue';
             })
         },
         mounted() {
+          
             const autocomplete = new google.maps.places.Autocomplete(
                 this.$refs["autocomplete"],
                 {
@@ -112,6 +115,10 @@ import dealerCards from './locations/dealerCard.vue';
             });
             this.getLocationNoPermission();
         },
+        setup(){
+         
+
+        },
         methods: {
             getLocationNoPermission(){
                 ApiCall.get_raw_location()
@@ -124,11 +131,9 @@ import dealerCards from './locations/dealerCard.vue';
                         parseFloat(response.data.latitude),
                         parseFloat(response.data.longitude),
               );
-                Maps.display_map(
-                        response.data.latitude, 
-                        response.data.longitude, 
-                        this.$refs["map"], 
-                        this.locations, this.markers);
+              this.initialize(response.data.latitude, 
+                        response.data.longitude);
+                        
                 })
                 .catch((error)=>{
                     console.log(error)
@@ -224,56 +229,9 @@ import dealerCards from './locations/dealerCard.vue';
         .then(response => {
           
           this.locations = response.data.location;
-          const place = response.data.location;
-
-          const map = new google.maps.Map(this.$refs["map"], {
-            zoom: 15,
-            center: new google.maps.LatLng(this.lat, this.lng),
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          });
-
          
-
-          const infoWindow = new google.maps.InfoWindow();
-
-          for (let i = 0; i <  this.locations.length; i++) {
-            const placeID  = place[i].id;
-            const str = place[i].longlat;
-            const arr = str.split(',');
-           let iconPhoto = '/upload/' + place[i].marker_icon
-            if(iconPhoto == null || iconPhoto == '/upload/image.png'){
-              iconPhoto = '/upload/marker.png';
-            }
-            
-  
-            const icon = {
-              url: iconPhoto, // url
-              scaledSize: new google.maps.Size(50, 50), // scaled size
-              origin: new google.maps.Point(0,0), // origin
-              anchor: new google.maps.Point(0, 0) // anchor
-          };
-          
-  
-            const marker = new google.maps.Marker({
-              position: new google.maps.LatLng(arr[0], arr[1]),
-              map: map,
-              title: place[i].title,
-              address: place[i].address,
-              icon: icon,
-              placeID:  place[i].id
-            });
-           
-            this.markers.push(marker);
-
-            google.maps.event.addListener(this.markers[i], 'click', function() { 
-                console.log(this.markers[i]);
-                var InfoContent = `<div style="color:black;" class="inforWindow"><h3>${this.title}</h3><p><strong>Address</strong> ${this.address}</p></div>`;
-                infoWindow.setContent(InfoContent);
-                infoWindow.open(map,this); 
-            }); 
-
-        }
-
+          this.initialize(this.lat, 
+                        this.lng);
         //  Maps.display_map(this.lat,  this.lng,   this.$refs["map"], response.data.location, this.markers);
         })
         .catch(error => {
@@ -282,8 +240,87 @@ import dealerCards from './locations/dealerCard.vue';
 
             },
             showInfoWindow(index) {
-                Maps.display_infoWindow(index);
+
+              this.activeIndex = index ;
+        console.log( gmarkers[index].title);
+        google.maps.event.trigger(gmarkers[index], 'click');
+            },
+            setMarkers(locations, maps) {
+              
+            for (let i = 0; i < locations.length; i++) {
+              const placeID  = locations[i].id;
+              const str = locations[i].longlat;
+              const arr = str.split(',');
+             let iconPhoto = '/upload/' + locations[i].marker_icon
+              if(iconPhoto == null || iconPhoto == '/upload/image.png'){
+                iconPhoto = '/upload/marker.png';
+              }
+              
+    
+              const icon = {
+                url: iconPhoto, // url
+                scaledSize: new google.maps.Size(50, 50), // scaled size
+                origin: new google.maps.Point(0,0), // origin
+                anchor: new google.maps.Point(0, 0) // anchor
+            };
+    
+    
+              const marker = new google.maps.Marker({
+                position: new google.maps.LatLng(arr[0], arr[1]),
+                map: maps,
+                title: locations[i].title,
+                address: locations[i].address,
+                draggable:true,
+                animation: google.maps.Animation.DROP,
+                placeID:  locations[i].id
+              });
+              const place = locations[i];
+              google.maps.event.addListener(marker, 'click', (function(marker, placeID) {
+                return function() {
+                    infowindow.setContent(`<div class="ui header">${place.title}</div>
+                    <p style="color:black;">${place.address}</p> <br>
+                    <a href="${place.website}" target="_blank">${place.website}</a>`);
+                    infowindow.open(maps, marker);
+                }
+            })(marker, placeID));
+
+            // Push the marker to the 'markers' array
+            gmarkers[placeID] = marker
+            this.markers.push(marker); 
+
+            google.maps.event.addListener(marker, 'dragend', function(marker) {
+        var latLng = marker.latLng;
+        
+        alert(latLng.lat() + ', ' + latLng.lng());
+      });
             }
+        },
+        reloadMarkers(markers) {
+
+// Loop through markers and set map to null for each
+for (var i=0; i<this.markers.length; i++) {
+  alert(this.markers[i]);
+  this.markers[i].setMap(null);
+}
+
+// Reset the markers array
+this.markers = [];
+
+// Call set markers to re-add markers
+this.setMarkers(this.locations);
+},
+ initialize(lat, long  ) {
+ const maps = new google.maps.Map(this.$refs["map"], {
+          zoom: 15,
+          center: new google.maps.LatLng(lat, long),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        this.setMarkers(this.locations, maps);
+
+  // Bind event listener on button to reload markers
+ 
+    }
         }
     }
 </script>
