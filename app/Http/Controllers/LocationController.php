@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Locations;
+use App\Models\Category;
 use Image;
 
 class LocationController extends Controller
@@ -23,6 +24,7 @@ class LocationController extends Controller
         $location->email = $request->email;
         $location->phone = $request->phone;
         $location->website = $request->website;
+        $location->category_id = $request->category_id;
 
         if($request->marker_icon != ""){
             $strpos = strpos($request->marker_icon, ';');
@@ -78,7 +80,7 @@ class LocationController extends Controller
             $img = Image::make($request->marker_icon)->resize(200,200);
             $upload_path = public_path()."/upload/";
             $image = $upload_path. $location->marker_icon;
-            $img->save($upload_path.$name);
+            $img->save($upload_path.$marker_name);
             if(file_exists($image)){
                 @unlink($image);
             }
@@ -130,11 +132,19 @@ class LocationController extends Controller
         ],222);
     }
 
-    public function get_close_locations($idArray){
+    public function get_close_locations(Request $request, $idArray){
 
        // $location = Locations::whereIn('id', [$id])->get();
        $array = explode('-', $idArray);
-       $location = Locations::whereIn('id', $array)->get();
+       
+        $location = Locations::where([
+            ['id', $idArray],
+            ['category_id' , 2],
+     ])->get();
+       
+       
+       
+       
        return response()->json([
            'location' => $location
        ],222);

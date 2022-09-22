@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +46,7 @@ Route::get('/nearby',  function  (Request $request)  {
  Route::get('/get_edit_location/{id}', [LocationController::class, 'get_edit_location']);
  Route::post('/update_location/{id}', [LocationController::class, 'update_location']);
  Route::get('/delete_location/{id}', [LocationController::class, 'delete_location']);
+
+ Route::get('/get_all_categories', [CategoryController::class, 'get_all_categories']);
+ //Route::get('/add_category', [LocationController::class, 'add_location']);
+ //Route::post('/add_category', [LocationController::class, 'add_location']);

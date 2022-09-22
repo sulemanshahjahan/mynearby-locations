@@ -41,4 +41,9 @@ export default {
         margin-bottom: 10px;
 
     }
+    img{
+      border-top-left-radius: 10px;
+    overflow: hidden;
+    border-bottom-right-radius: 10px;
+    }
 </style>

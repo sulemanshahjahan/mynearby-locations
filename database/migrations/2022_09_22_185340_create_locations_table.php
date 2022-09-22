@@ -18,11 +18,13 @@ return new class extends Migration
             $table->string('title');
             $table->string('longlat')->unique();
             $table->text('address')->nullable();
+            $table->string('category')->nullable();
             $table->string('website')->nullable();
             $table->string('email');
             $table->string('phone'); 
             $table->string('marker_icon')->nullable();
             $table->string('photo')->nullable();
+            $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });
     }

@@ -18,9 +18,10 @@
         <div class="field">
           <div class="two fields">
             <div class="field">
-              <select >
-                <option value="Marines">Marines</option>
-                <option value="posts">Restaurants</option>
+              <select v-model="category_type">
+                <option disabled value="0">Select Type</option>
+                <option v-for="(category, index) in this.categories" :key="index" :value="category.id"> {{category.name }}</option>
+                
               </select>
             </div>
 
@@ -38,7 +39,7 @@
           :key="dealer.id"
           @click="showInfoWindow(dealer.id)"
           :class="{'active' : activeIndex === dealer.id}"
-          style="padding:10px;" :dealer="dealer"></dealerCards>
+          style="padding:10px;" :dealer="dealer" :data-id="'dealer-'+dealer.id"></dealerCards>
           </div>
         <div class="noLocMessage" v-else>
             <h4>No dealers available at this location.</h4>
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+import APICalls from '../services/APICalls.js';
 import ApiCall from '../services/APICalls.js';
 import Maps from '../services/Maps.js';
 
@@ -73,7 +75,9 @@ import dealerCards from './locations/dealerCard.vue';
             totalLocations: 0,
             lat:0,
             lng: 0,
+            category_type: 0,
             markers: [],
+            categories: [],
             activeIndex: -1,
             map: null,
             infoWindow: new google.maps.InfoWindow()
@@ -97,7 +101,13 @@ import dealerCards from './locations/dealerCard.vue';
             })
         },
         mounted() {
-          
+            APICalls.getCategories()
+            .then(response => {
+              this.categories = response.data.categories;
+            })
+            .catch(error => {
+              console.log(error);
+            })
             const autocomplete = new google.maps.places.Autocomplete(
                 this.$refs["autocomplete"],
                 {
@@ -225,11 +235,11 @@ import dealerCards from './locations/dealerCard.vue';
       const URL = `/api/get_close_locations/${$idArray}`;
     
       return axios
-        .get(URL)
+        .get(URL, this.category_type)
         .then(response => {
           
-          this.locations = response.data.location;
-         
+         // this.locations = response.data.location;
+          alert($idArray + '  ' + this.category_type)
           this.initialize(this.lat, 
                         this.lng);
         //  Maps.display_map(this.lat,  this.lng,   this.$refs["map"], response.data.location, this.markers);
@@ -271,6 +281,7 @@ import dealerCards from './locations/dealerCard.vue';
                 title: locations[i].title,
                 address: locations[i].address,
                 draggable:true,
+                icon: icon,
                 animation: google.maps.Animation.DROP,
                 placeID:  locations[i].id
               });
@@ -281,6 +292,8 @@ import dealerCards from './locations/dealerCard.vue';
                     <p style="color:black;">${place.address}</p> <br>
                     <a href="${place.website}" target="_blank">${place.website}</a>`);
                     infowindow.open(maps, marker);
+
+                    jQuery('div[data-id=dealer-'+placeID+']').trigger('click');
                 }
             })(marker, placeID));
 

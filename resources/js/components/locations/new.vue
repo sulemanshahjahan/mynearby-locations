@@ -1,6 +1,10 @@
 <script setup>
-    import { onMounted, ref} from 'vue';
+    import { onMounted, onUpdated, ref} from 'vue';
     import router from '../../router';
+    import ApiCall from '../../services/APICalls'; 
+
+    
+
     let form = ref({
         title: '',
         address: '',
@@ -9,7 +13,9 @@
         longlat: '',
         email: '',
         phone: '',
-        website: ''
+        website: '',
+        categories: '',
+        category_id: 0,
     });
 
     let locAddress = '';
@@ -76,7 +82,9 @@
         formData.append('marker_icon', form.value.marker_icon);
         formData.append('phone', form.value.phone);
         formData.append('website', form.value.website);
-    
+        formData.append('category_id', form.value.category_id);
+
+
         axios.post("/api/add_location", formData)
             .then((response)=>{
                 form.value.title = '',
@@ -87,6 +95,7 @@
                 form.value.email = '',
                 form.value.website = '',
                 form.value.phone = '',
+                form.value.category_id = 0
 
                 router.push({name: 'Dashboard'})
 
@@ -105,9 +114,17 @@
     const el = ref({
         locAddress: '',
     })
-   
+ 
+
+
 onMounted(() => {
-  console.log(el.value)
+  
+    ApiCall.getCategories()
+    .then(response => {
+        form.value.categories  = response.data.categories;
+        
+    })
+
   const autocomplete = new google.maps.places.Autocomplete(
     el.value,
         {
@@ -178,8 +195,15 @@ onMounted(() => {
 
                 <p class="my-1">Address (optional)</p>
                 <input   class="input" id="specific" ref="el">
-                <input  v-model="form.address" name="address" class="input addresss"  >
+                <input  v-model="form.address" name="address" type="hidden" class="input addresss"  >
                 
+                
+                <p class="my-1">Category</p>
+                <select v-model="form.category_id" >
+                    <option disabled value="0">Select option</option>
+                    <option v-for="(category, index) in form.categories" :value="category.id" :key="index">{{ category.name }}</option>
+                </select>
+
                 <div class="products__create__main--media--images mt-2">
                    <ul class="products__create__main--media--images--list list-unstyled">
                        <li class="products__create__main--media--images--item">

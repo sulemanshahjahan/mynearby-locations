@@ -6,6 +6,7 @@
         title: '',
         address: '',
         photo: '',
+        marker_icon: '',
         longlat: '',
         email: '',
         phone: '',
@@ -58,6 +59,33 @@
     
     }
 
+
+    const getMarkerIcon = () => {
+        let marker_icon = '/upload/image.png';
+        if(form.value.marker_icon){
+            if(form.value.marker_icon.indexOf('base64') != -1){
+                marker_icon = form.value.marker_icon;
+            }else{
+                marker_icon = '/upload/' + form.value.marker_icon
+            }
+        }
+        return marker_icon;
+    }
+
+    const updateMarkerIcon = (e) => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        let limit = 1024 * 1024 * 2;
+        if(file['size' > limit]){
+            return false
+        }
+        reader.onloadend = (file) => {
+            form.value.marker_icon = reader.result;
+        }
+
+        reader.readAsDataURL(file);
+    }
+
     const updateLocation = () =>{
         const formData = new FormData();
         formData.append('title', form.value.title);
@@ -65,6 +93,7 @@
         formData.append('longlat', form.value.longlat);
         formData.append('email', form.value.email);
         formData.append('photo', form.value.photo);
+        formData.append('marker_icon', form.value.marker_icon);
         formData.append('phone', form.value.phone);
         formData.append('website', form.value.website);
     
@@ -74,6 +103,7 @@
                 form.value.address = '',
                 form.value.longlat = '',
                 form.value.photo = '',
+                form.value.marker_icon = '',
                 form.value.email = '',
                 form.value.website = '',
                 form.value.phone = '',
@@ -131,6 +161,25 @@
                                <form class="products__create__main--media--images--item--form">
                                    <label class="products__create__main--media--images--item--form--label" for="myfile">Add Image</label>
                                    <input class="products__create__main--media--images--item--form--input" type="file" id="myfile" @change="updatePhoto">
+                               </form>
+                           </li>
+                       </ul>
+                   </div>
+
+                   <div class="products__create__main--media--images mt-2">
+                       <ul class="products__create__main--media--images--list list-unstyled">
+                           
+                           <li class="products__create__main--media--images--item">
+                               <div class="products__create__main--media--images--item--imgWrapper">
+                                   <img class="products__create__main--media--images--item--img" :src="getMarkerIcon()">
+                               </div>
+                           </li>
+   
+                           <!-- upload image small -->
+                           <li class="products__create__main--media--images--item">
+                               <form class="products__create__main--media--images--item--form">
+                                   <label class="products__create__main--media--images--item--form--label" for="myfile">Add Image</label>
+                                   <input class="products__create__main--media--images--item--form--input" type="file" id="myfile" @change="updateMarkerIcon">
                                </form>
                            </li>
                        </ul>

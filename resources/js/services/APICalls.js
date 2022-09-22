@@ -19,5 +19,8 @@ export default{
     },
     get_raw_location(){
         return apiClient.get('/api/no_permission_location')
+    },
+    getCategories(){
+        return apiClient.get('/api/get_all_categories')
     }
 }
