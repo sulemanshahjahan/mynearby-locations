@@ -36,11 +36,7 @@ export default {
 }
 </script>
 <style scoped>
-    .content{
-        background:#111;
-        margin-bottom: 10px;
 
-    }
     img{
       border-top-left-radius: 10px;
     overflow: hidden;

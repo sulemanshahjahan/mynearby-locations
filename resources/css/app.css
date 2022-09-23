@@ -7,7 +7,7 @@
 
 body {
     
-    background: #495158;
+    background: #00434c;
     color:#FFF;
 }
 
@@ -38,8 +38,41 @@ main h1 ~ p {
     margin-left: auto;
     margin-right: auto;
 }
+.active{
+    background-color: #007e5b !important;
+}
+.ui.button, .dot.circle.icon {
+    background-color: #007e5b !important;
+    color: white;
 
+}
+.bg-dark-custom {
+    background-color: #00181c!important;
+}
+.ui.segment{
+    background:#00181c; 
+}
+.ui.large.form{
+    margin-top:15px;
+}
+.full-width{
+    width: 100%;
+}
+.left-col{
+    padding-left:25px;
+    padding-right:0;
+}
+.padding0{
+    padding:0 !important;
+}
+.ui.icon.input>i.icon{
+    opacity: .8 !important;
+}
+.locations .content{
+    background:#00181c;
+    margin-bottom: 10px;
 
+}
 .my-3 {
     margin-top: 30px;
     margin-bottom: 30px;

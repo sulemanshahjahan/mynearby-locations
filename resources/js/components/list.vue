@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col">
+        <div class="col left-col">
           <form class="ui segment large form" @submit.prevent="find_closest_markers">
       <div class="ui segment">
         <div class="field">
@@ -21,7 +21,18 @@
               <select v-model="category_type">
                 <option disabled value="0">Select Type</option>
                 <option v-for="(category, index) in this.categories" :key="index" :value="category.id"> {{category.name }}</option>
-                
+              </select>
+              </div>
+              <div class="field">
+              <select v-model="radius">
+                <option disabled value="900">Select Distance</option>
+                <option value="1000">1 KM</option>
+                <option value="2000">2 KM</option>
+                <option value="3000">3 KM</option>
+                <option value="4000">4 KM</option>
+                <option value="5000">5 KM</option>
+                <option value="7000">7 KM</option>
+                <option value="10000">10 KM</option>
               </select>
             </div>
 
@@ -29,7 +40,7 @@
           </div>
         </div>
 
-        <button class="ui button" >Find CloseBuy Places</button>
+        <button class="ui button full-width" >Find Nearby</button>
       </div>
     </form>
 
@@ -79,6 +90,7 @@ import dealerCards from './locations/dealerCard.vue';
             markers: [],
             categories: [],
             activeIndex: -1,
+            radius:900,
             map: null,
             infoWindow: new google.maps.InfoWindow()
 
@@ -215,10 +227,10 @@ import dealerCards from './locations/dealerCard.vue';
        // console.log(markers_distances.sort((a, b) => {return a.distance-b.distance}));
       var closest_markers = markers_distances.sort((a, b) => {return a.distance-b.distance})
     
-      console.log(closest_markers);
+      
             closest_markers.map((item, index) => {
                
-              if(item.distance < 5000){
+              if(item.distance < this.radius){
                   
                     newLocations.push(item.marker.placeID);
                     
@@ -232,14 +244,14 @@ import dealerCards from './locations/dealerCard.vue';
 
             const $idArray = newLocations.join('-');    
       
-      const URL = `/api/get_close_locations/${$idArray}`;
+      const URL = `/api/get_close_locations/`;
     
       return axios
-        .get(URL, this.category_type)
+        .get(`/api/get_close_locations/${$idArray}?category_type=` + this.category_type)
         .then(response => {
-          
-         // this.locations = response.data.location;
-          alert($idArray + '  ' + this.category_type)
+        //alert(URL + '?category_type=' + this.category_type)
+         this.locations = response.data.location;
+ 
           this.initialize(this.lat, 
                         this.lng);
         //  Maps.display_map(this.lat,  this.lng,   this.$refs["map"], response.data.location, this.markers);
@@ -252,7 +264,6 @@ import dealerCards from './locations/dealerCard.vue';
             showInfoWindow(index) {
 
               this.activeIndex = index ;
-        console.log( gmarkers[index].title);
         google.maps.event.trigger(gmarkers[index], 'click');
             },
             setMarkers(locations, maps) {
@@ -339,6 +350,13 @@ this.setMarkers(this.locations);
 </script>
 <style>
     .map-holder{
-        height:800px;
+        height:calc(100vh - 43px);
+    }
+    .locations{
+      height: 673px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin-right: -10px;
+    border: 1px solid rgba(0,0,0,.4); 
     }
 </style>

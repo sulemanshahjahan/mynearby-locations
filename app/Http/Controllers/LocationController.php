@@ -136,11 +136,14 @@ class LocationController extends Controller
 
        // $location = Locations::whereIn('id', [$id])->get();
        $array = explode('-', $idArray);
-       
-        $location = Locations::where([
-            ['id', $idArray],
-            ['category_id' , 2],
-     ])->get();
+       $categories = explode(',', $request->category_type);
+
+       if($request->category_type){
+        $location = Locations::whereIn('id', $array)->whereIn('category_id', $categories)->get();
+       }else{
+        $location = Locations::whereIn('id', $array)->get();
+       }
+        
        
        
        

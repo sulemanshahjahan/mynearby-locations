@@ -1,6 +1,6 @@
 <template>
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-sm bg-dark-custom navbar-dark">
         <router-link class="navbar-brand" :to="{name :'List' }">Home </router-link>
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -12,9 +12,7 @@
             <li class="nav-item">
                 <router-link class="text-white ml-2" :to="{name : 'Dashboard' }" v-if="$store.getters.getToken != 0"> Dashboard</router-link>
             </li>
-            <li class="nav-item">
-                <router-link class="text-white ml-2" :to="{name : 'Nearby' }" > Nearby Things</router-link>
-            </li>
+
 
         </ul>
 

@@ -361,10 +361,7 @@
   .pac-item-query {
     font-size: 16px;
   }
-  
-  .active {
-    background: #ff5a5f !important;
-  }
+ 
   .list-holder{
     max-height:500px;overflow:auto; 
   }
