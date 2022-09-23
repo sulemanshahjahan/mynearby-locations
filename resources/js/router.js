@@ -7,6 +7,7 @@ import dashboard from './pages/dashboard.vue';
 import nearby from './pages/nearby.vue';
 import locationIndex from './components/locations/index.vue';
 import locationNew from './components/locations/new.vue';
+import categoryNew from './components/categories/new.vue';
 import locationEdit from './components/locations/edit.vue';
 import dealerLocator from './components/dealerLocator.vue';
 import List from './components/list.vue';
@@ -65,6 +66,12 @@ const routes = [
         name : 'locationEdit',
         props: true,
         component : locationEdit
+    },
+    {
+        path : '/category/new',
+        name : 'categoryNew',
+        props: true,
+        component : categoryNew
     },
     {
         path: '/dealers',
