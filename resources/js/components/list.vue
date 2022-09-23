@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col left-col">
+        <div class="col side">
           <form class="ui segment large form" @submit.prevent="find_closest_markers">
       <div class="ui segment">
         <div class="field">
@@ -137,10 +137,6 @@ import dealerCards from './locations/dealerCard.vue';
             });
             this.getLocationNoPermission();
         },
-        setup(){
-         
-
-        },
         methods: {
             getLocationNoPermission(){
                 ApiCall.get_raw_location()
@@ -174,6 +170,8 @@ import dealerCards from './locations/dealerCard.vue';
                         position.coords.latitude,
                         position.coords.longitude
                         );
+
+                      
                     },
                     error => {
                         this.error =
@@ -212,15 +210,15 @@ import dealerCards from './locations/dealerCard.vue';
                     this.locations = 0;
                 }
                
-              
+                var state_markers = this.$store.getters.getMarkers;
                 var markers_distances = [];
                 var newLocations = [];
-      for (let i = 0; i < this.markers.length; i++) {
+      for (let i = 0; i < state_markers.length; i++) {
         
-          var d = google.maps.geometry.spherical.computeDistanceBetween(this.markers[i].position, new google.maps.LatLng(this.lat, this.lng));
+          var d = google.maps.geometry.spherical.computeDistanceBetween(state_markers[i].position, new google.maps.LatLng(this.lat, this.lng));
           markers_distances[i] = {
               distance: d, 
-              marker: this.markers[i]
+              marker: state_markers[i]
           }
          // console.log( markers_distances[i]);
       }
@@ -254,7 +252,7 @@ import dealerCards from './locations/dealerCard.vue';
  
           this.initialize(this.lat, 
                         this.lng);
-        //  Maps.display_map(this.lat,  this.lng,   this.$refs["map"], response.data.location, this.markers);
+         
         })
         .catch(error => {
           this.error = error.message;
@@ -266,83 +264,9 @@ import dealerCards from './locations/dealerCard.vue';
               this.activeIndex = index ;
         google.maps.event.trigger(gmarkers[index], 'click');
             },
-            setMarkers(locations, maps) {
-              
-            for (let i = 0; i < locations.length; i++) {
-              const placeID  = locations[i].id;
-              const str = locations[i].longlat;
-              const arr = str.split(',');
-             let iconPhoto = '/upload/' + locations[i].marker_icon
-              if(iconPhoto == null || iconPhoto == '/upload/image.png'){
-                iconPhoto = '/upload/marker.png';
-              }
-              
-    
-              const icon = {
-                url: iconPhoto, // url
-                scaledSize: new google.maps.Size(50, 50), // scaled size
-                origin: new google.maps.Point(0,0), // origin
-                anchor: new google.maps.Point(0, 0) // anchor
-            };
-    
-    
-              const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(arr[0], arr[1]),
-                map: maps,
-                title: locations[i].title,
-                address: locations[i].address,
-                draggable:true,
-                icon: icon,
-                animation: google.maps.Animation.DROP,
-                placeID:  locations[i].id
-              });
-              const place = locations[i];
-              google.maps.event.addListener(marker, 'click', (function(marker, placeID) {
-                return function() {
-                    infowindow.setContent(`<div class="ui header">${place.title}</div>
-                    <p style="color:black;">${place.address}</p> <br>
-                    <a href="${place.website}" target="_blank">${place.website}</a>`);
-                    infowindow.open(maps, marker);
-
-                    jQuery('div[data-id=dealer-'+placeID+']').trigger('click');
-                }
-            })(marker, placeID));
-
-            // Push the marker to the 'markers' array
-            gmarkers[placeID] = marker
-            this.markers.push(marker); 
-
-            google.maps.event.addListener(marker, 'dragend', function(marker) {
-        var latLng = marker.latLng;
-        
-        alert(latLng.lat() + ', ' + latLng.lng());
-      });
-            }
-        },
-        reloadMarkers(markers) {
-
-// Loop through markers and set map to null for each
-for (var i=0; i<this.markers.length; i++) {
-  alert(this.markers[i]);
-  this.markers[i].setMap(null);
-}
-
-// Reset the markers array
-this.markers = [];
-
-// Call set markers to re-add markers
-this.setMarkers(this.locations);
-},
+            
  initialize(lat, long  ) {
- const maps = new google.maps.Map(this.$refs["map"], {
-          zoom: 15,
-          center: new google.maps.LatLng(lat, long),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-
-        this.setMarkers(this.locations, maps);
-
-  // Bind event listener on button to reload markers
+    Maps.initialize(lat, long, this.$refs["map"], this.locations)
  
     }
         }

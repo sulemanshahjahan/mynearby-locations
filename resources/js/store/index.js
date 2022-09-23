@@ -5,7 +5,8 @@ const store = createStore({
 
     state: {
         name: localStorage.getItem('name') || 0,
-        token : localStorage.getItem('token') || 0
+        token : localStorage.getItem('token') || 0,
+        markers: []
     },
 
     mutations:{
@@ -16,6 +17,9 @@ const store = createStore({
          // update variable value
          UPDATE_NAME(state,payload){
             state.name = payload
+        },
+        ADD_MARKER(state, marker){
+            state.markers.push(marker)
         }
     },
 
@@ -37,6 +41,9 @@ const store = createStore({
         removeName(context){
             localStorage.removeItem('name');
             context.commit('UPDATE_NAME', 0);
+        },
+        createMarker({commit}, marker){
+            commit('ADD_MARKER', marker)
         }
     },
 
@@ -47,6 +54,9 @@ const store = createStore({
         },
         getName: function(state){
             return state.name
+        },
+        getMarkers: function(state){
+            return state.markers
         }
     }
 

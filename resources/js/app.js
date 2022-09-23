@@ -20,6 +20,8 @@ window.toast = toast;
 const infoWindows = new google.maps.InfoWindow();
 window.infowindow = infoWindows;
 
+
+
 var gmarkers = [];
 window.gmarkers = gmarkers;
 import App from './layouts/App.vue'

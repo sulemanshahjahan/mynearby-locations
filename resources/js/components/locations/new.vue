@@ -2,7 +2,7 @@
     import { onMounted, onUpdated, ref} from 'vue';
     import router from '../../router';
     import ApiCall from '../../services/APICalls'; 
-
+    import Maps from '../../services/Maps'; 
     
 
     let form = ref({
@@ -114,8 +114,12 @@
     const el = ref({
         locAddress: '',
     })
- 
 
+    const map = ref({
+        locAddress: '',
+    })
+ 
+ 
 
 onMounted(() => {
   
@@ -163,13 +167,18 @@ onMounted(() => {
         // Dispatch the event on "native" element
         longlatput.get(0).dispatchEvent(longlatevent);
 
+        let dealer;
+        Maps.initialize(place.geometry.location.lat(), place.geometry.location.lng(), map.value,  dealer = 'new')
       });
+
+      
 
 })
 </script>
 
 <template>
     <div class="container">
+        <div class="row">
         <div class="products__create ">
     
     <div class="products__create__titlebar dflex justify-content-between align-items-center">
@@ -199,7 +208,7 @@ onMounted(() => {
                 
                 
                 <p class="my-1">Category</p>
-                <select v-model="form.category_id" >
+                <select class="input" v-model="form.category_id" >
                     <option disabled value="0">Select option</option>
                     <option v-for="(category, index) in form.categories" :value="category.id" :key="index">{{ category.name }}</option>
                 </select>
@@ -279,6 +288,10 @@ onMounted(() => {
         <p ></p>
         <button class="btn btn-secondary" @click="saveLocation">Save</button>
     </div>
+
+</div>
+
+<div class="ten wide column map-holder" ref="map"></div>
 
 </div>
     </div>
