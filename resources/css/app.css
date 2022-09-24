@@ -35,8 +35,8 @@ main h1 ~ p {
 }
 .container {
 	width: 100%;
-	max-width: 1200px;
-	margin-top: 5rem;
+	max-width: 992px;
+	margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -44,7 +44,7 @@ main h1 ~ p {
     background-color: #007e5b !important;
 }
 .ui.button, .dot.circle.icon {
-    background-color: #007e5b !important;
+    background-color: #08afaf  !important;
     color: white;
 
 }
@@ -56,6 +56,7 @@ main h1 ~ p {
 }
 .ui.large.form{
     margin-top:15px;
+    padding:0;
 }
 .full-width{
     width: 100%;
@@ -73,11 +74,11 @@ main h1 ~ p {
 .locations .content{
     background:#00181c;
     margin-bottom: 10px;
-
+    padding:10px;
 }
 .my-3 {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 14px !important;
+    margin-bottom: 0px !IMPORTANT;
 }
 
 .mt-2 {
@@ -325,7 +326,13 @@ main h1 ~ p {
     position: relative;
     cursor: pointer;
 }
-
+.products__create__main--media--images--item h4 {
+    text-align: center;
+    margin-bottom: 0;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 3px 0px;
+    margin-bottom: 10px;
+}
 .products__create__main--media--form {
     border: 2px dashed #6a727a;
     position: relative;
@@ -337,7 +344,7 @@ main h1 ~ p {
 .products__create__main--media--images--list {
     display: -ms-grid;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 5px;
 }
 
@@ -361,8 +368,8 @@ main h1 ~ p {
 }
 
 .products__create__main--media--images--item--img {
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: 55px;
     -o-object-fit: cover;
     object-fit: cover;
 }

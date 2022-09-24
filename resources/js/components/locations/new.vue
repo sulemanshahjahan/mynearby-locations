@@ -216,6 +216,7 @@ onMounted(() => {
                 <div class="products__create__main--media--images mt-2">
                    <ul class="products__create__main--media--images--list list-unstyled">
                        <li class="products__create__main--media--images--item">
+                        <h4>Featured</h4>
                            <div class="products__create__main--media--images--item--imgWrapper">
                                <img class="products__create__main--media--images--item--img" :src="getPhoto()" alt="" />  
                            </div>
@@ -227,13 +228,8 @@ onMounted(() => {
                                <input class="products__create__main--media--images--item--form--input" type="file" @change="updatePhoto" id="myfile" >
                            </form>
                        </li>
-                   </ul>
-               </div>
-
-               <div class="products__create__main--media--images mt-2">
-                    <h4>Marker</h4>
-                   <ul class="products__create__main--media--images--list list-unstyled">
                        <li class="products__create__main--media--images--item">
+                        <h4>Marker</h4>
                            <div class="products__create__main--media--images--item--imgWrapper">
                                <img class="products__create__main--media--images--item--img" :src="getMarkerIcon()" alt="" />  
                            </div>
@@ -245,6 +241,13 @@ onMounted(() => {
                                <input class="products__create__main--media--images--item--form--input" type="file" @change="updateMarkerIcon" id="myfile" >
                            </form>
                        </li>
+                   </ul>
+               </div>
+
+               <div class="products__create__main--media--images mt-2">
+                    
+                   <ul class="products__create__main--media--images--list list-unstyled">
+                       
                    </ul>
                </div>
            
@@ -260,14 +263,14 @@ onMounted(() => {
                     <p>Longitude and Latitude</p>
                     <input type="text" class="input longlat" name="longlat" v-model="form.longlat" >
                 </div>
-                <hr>
+                
 
                 <!-- Product invrntory -->
                 <div class="my-3">
                     <p>Website</p>
                     <input type="text" class="input" v-model="form.website">
                 </div>
-                <hr>
+                
 
                 <!-- Product Price -->
                 <div class="my-3">
@@ -283,11 +286,7 @@ onMounted(() => {
 
         </div>
     </div>
-    <!-- Footer Bar -->
-    <div class="dflex justify-content-between align-items-center my-3">
-        <p ></p>
-        <button class="btn btn-secondary" @click="saveLocation">Save</button>
-    </div>
+    
 
 </div>
 
@@ -296,3 +295,10 @@ onMounted(() => {
 </div>
     </div>
 </template>
+
+<style scoped>
+    .map-holder{
+        height:360px;
+        margin-top:20px;
+    }
+</style>

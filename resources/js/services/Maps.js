@@ -1,12 +1,19 @@
 import store from '../store/index.js';
-
+  var origLat;
+  var origLng;
+  var $ref;
+  var $dealers;
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
 export default{
 
-
     initialize(lat, long, $refs, dealers){
-      alert(dealers);
+      this.origLat = lat;
+      this.origLng = long;
+      this.$ref = $refs;
+      this.$dealers = dealers;
       const maps = new google.maps.Map($refs, {
-        zoom: 15,
+        zoom: 13,
         center: new google.maps.LatLng(lat, long),
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
@@ -79,14 +86,19 @@ export default{
         });
         const place = locations[i];
         google.maps.event.addListener(marker, 'click', (function(marker, placeID) {
+          
           return function() {
               infowindow.setContent(`<div class="ui header">${place.title}</div>
               <p style="color:black;">${place.address}</p> <br>
               <a href="${place.website}" target="_blank">${place.website}</a>`);
               infowindow.open(maps, marker);
+              
 
               jQuery('div[data-id=dealer-'+placeID+']').trigger('click');
+             
           }
+
+          
       })(marker, placeID));
 
       // Push the marker to the 'markers' array
@@ -99,5 +111,35 @@ export default{
 
       }
 
+},
+showDistance(dealer){
+  const str = dealer.longlat;
+        const arr = str.split(',');
+
+        const maps = new google.maps.Map(this.$ref, {
+          zoom: 13,
+          center: new google.maps.LatLng(parseFloat(this.origLat), parseFloat(this.origLng)),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+
+
+  directionsService.route({
+    origin: { lat: parseFloat(this.origLat), lng:  parseFloat(this.origLng) },
+    destination: { lat: parseFloat(arr[0]), lng:parseFloat(arr[1]) },
+    travelMode: 'DRIVING'
+  }, function (response, status) {
+    if (status === 'OK') {
+ 
+      jQuery('#distance-text').html(response.routes[0].legs[0].distance.text);
+     
+      jQuery('#duration-text').html(response.routes[0].legs[0].duration.text);
+      directionsDisplay.setDirections(response);
+      directionsDisplay.setMap(maps);
+    } else {
+      alert('Directions request failed due to ' + status);
+    }
+  });
+  
 }
 }

@@ -45,19 +45,39 @@
     </form>
 
         <div class="locations" v-if="locations && locations.length > 0">
-         <dealerCards  class="item"
-          v-for="(dealer, index) in locations"
-          :key="dealer.id"
-          @click="showInfoWindow(dealer.id)"
-          :class="{'active' : activeIndex === dealer.id}"
-          style="padding:10px;" :dealer="dealer" :data-id="'dealer-'+dealer.id"></dealerCards>
+          <div class="content item" :id="dealer.id"  v-for="(dealer, index) in locations"
+          :key="dealer.id" :dealer="dealer" :data-id="'dealer-'+dealer.id" 
+          >
+            
+            <div class="custom-img-box"> <img v-if="dealer.photo" :src="ourImage(dealer.photo)" width="100" height="100"></div>
+            <div class="custom-location-text">
+            <div class="header"><h2>{{dealer.title}} </h2></div>
+            <div class="meta"><i class="fa fa-globe" aria-hidden="true"></i> {{dealer.address}}</div>
           </div>
+          <div class="dealer-buttons">
+            <button class="ui button"  @click="showInfoWindow(dealer.id)">View On Map</button>
+            <button class="ui button"  @click="getDirection(dealer, dealer.id, dealer.address)">Get Directions</button>
+          </div>
+        
+          </div>  
+        
+        </div>
         <div class="noLocMessage" v-else>
             <h4>No dealers available at this location.</h4>
         </div>
         </div>
         <div class="col-9">
-            <div class="ten wide column map-holder" ref="map"></div>
+            <div class="map-parent">
+              <div class="route_details">
+                <div class="origin-add"><strong>From: </strong>{{this.address}}</div>
+                <div class="destination-add"><strong>To: </strong>{{this.destination}}</div>
+                <div class="distance">
+                  <span id="distance-text">0</span> <span id="duration-text">0</span>
+                </div>
+              </div>
+              <div class="ten wide column map-holder" ref="map"> </div>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -81,6 +101,7 @@ import dealerCards from './locations/dealerCard.vue';
             photo: '',
             website: '',
             phone: '',
+            destination: '',
             apiKey: "AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM",
             locations: [],
             totalLocations: 0,
@@ -90,6 +111,7 @@ import dealerCards from './locations/dealerCard.vue';
             markers: [],
             categories: [],
             activeIndex: -1,
+            directionVuew: 0,
             radius:900,
             map: null,
             infoWindow: new google.maps.InfoWindow()
@@ -135,7 +157,7 @@ import dealerCards from './locations/dealerCard.vue';
                 this.lat = place.geometry.location.lat();
                 this.lng = place.geometry.location.lng();
             });
-            this.getLocationNoPermission();
+            this.locatorButtonPressed();
         },
         methods: {
             getLocationNoPermission(){
@@ -171,7 +193,8 @@ import dealerCards from './locations/dealerCard.vue';
                         position.coords.longitude
                         );
 
-                      
+                        this.initialize( position.coords.latitude, 
+                        position.coords.longitude);
                     },
                     error => {
                         this.error =
@@ -259,16 +282,48 @@ import dealerCards from './locations/dealerCard.vue';
         });
 
             },
-            showInfoWindow(index) {
-
-              this.activeIndex = index ;
-        google.maps.event.trigger(gmarkers[index], 'click');
-            },
+            
             
  initialize(lat, long  ) {
     Maps.initialize(lat, long, this.$refs["map"], this.locations)
  
-    }
+    },
+    ourImage(img) {
+        return "/upload/" + img
+    },
+    showInfoWindow(index) {
+      
+
+      if(this.directionVuew == 1){
+        
+        jQuery('.ui.button.full-width').trigger('click');
+        this.directionVuew = 0;
+        setTimeout(function(){
+          this.directionVuew = 0;
+google.maps.event.trigger(gmarkers[index], 'click');
+
+},1500)
+this.directionVuew = 0;
+      }else{
+        google.maps.event.trigger(gmarkers[index], 'click');
+      }
+      
+this.activeIndex = index ;
+
+
+  
+
+
+jQuery('.content.item').removeClass('active');
+jQuery('div[data-id=dealer-'+ index+']').addClass('active');
+},
+getDirection(dealer, index, address){
+  this.directionVuew = 1;
+  this.destination = dealer.address;
+  jQuery('.content.item').removeClass('active');
+jQuery('div[data-id=dealer-'+ index+']').addClass('active');
+  Maps.showDistance(dealer);
+}
         }
     }
 </script>
@@ -277,10 +332,63 @@ import dealerCards from './locations/dealerCard.vue';
         height:calc(100vh - 43px);
     }
     .locations{
-      height: 673px;
+      height: calc(100vh - 288px);
     overflow-x: hidden;
     overflow-y: scroll;
     margin-right: -10px;
     border: 1px solid rgba(0,0,0,.4); 
     }
+    .col.side{
+      padding-left: 25px;
+    padding-right: 0;
+    }
+    .locations img{
+      border-top-left-radius: 10px;
+      overflow: hidden;
+      border-bottom-right-radius: 10px;
+    }
+    .custom-img-box{
+      float:left;
+    }
+    .custom-location-text{
+      display: inline-block;
+      width: 65%;
+      padding-left: 10px;
+    }
+    .dealer-buttons{
+      display: inline-block;
+     width:100%;
+     margin:10px 0 0 0; 
+    }
+    .dealer-buttons .ui.button{
+     margin-right:10px;
+    }
+    .map-parent {
+    position: relative;
+}
+    .route_details {
+    position: absolute;
+    z-index: 9;
+    width: 350px;
+    padding: 10px;
+    background: #07a1a1bf;
+    right: 10px;
+    top: 65px;
+}
+.distance{
+  width:100%;
+  text-align:center;
+}
+.distance>span {
+    width: auto;
+    /* height: 30px; */
+    background: #024a56;
+    color: white;
+    text-align: center;
+    margin-right: 10px;
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 15px;
+    margin-top:5px;
+}
 </style>
