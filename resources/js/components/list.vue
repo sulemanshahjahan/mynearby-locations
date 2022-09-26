@@ -61,7 +61,7 @@
           <div class="dealer-buttons">
             <button class="ui button view-on-map"  @click="showInfoWindow(dealer.id)">View On Map</button>
             <button class="ui button"  @click="getDirection(dealer, dealer.id, dealer.address)">Get Directions</button>
-            <button class="ui button" >Contact {{ categories[dealer.category_id - 1].name }}</button>
+            <button class="ui button" >Contact </button>
           </div>
         
           </div>  
@@ -134,9 +134,9 @@ import dealerCards from './locations/dealerCard.vue';
             })
             .catch(error => {
                 if (error.response && error.response.status == 404) {
-                    next({ name: '404Resource', params: { resource: 'pair' } })
+                   // next({ name: '404Resource', params: { resource: 'pair' } })
                 } else {
-                    next({ name: 'NetworkError' })
+                   // next({ name: 'NetworkError' })
                 }
             })
         },
