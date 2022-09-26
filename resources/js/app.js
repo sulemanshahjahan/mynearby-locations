@@ -27,6 +27,8 @@ window.gmarkers = gmarkers;
 import App from './layouts/App.vue'
 
 
+
+
 createApp(App)
     .use(router)
     .use(store)

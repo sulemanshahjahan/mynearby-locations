@@ -76,6 +76,15 @@
     }
 
     const saveLocation = () => {
+
+        $('.products__create input').each(function(){
+            
+            if($(this).val() == ''){
+                $(this).addClass('error-border');
+                $(this).parents('.field_box').find('.errorMessage').html("This field can't be empty.");
+           
+            }else{
+
         const formData = new FormData();
         formData.append('title', form.value.title);
         formData.append('address', form.value.address);
@@ -112,6 +121,8 @@
             .catch((error)=>{
                 console.error(error);
             })
+        }
+    })
     }
 
 
@@ -188,7 +199,7 @@ onMounted(() => {
     <div class="products__create__titlebar dflex justify-content-between align-items-center">
         <div class="products__create__titlebar--item">
             
-            <h1 class="my-1">Add Location {{form.company_id}}</h1>
+            <h1 class="my-1">Add Dealer </h1>
         </div>
         <div class="products__create__titlebar--item">
             
@@ -203,20 +214,30 @@ onMounted(() => {
     <div class="products__create__cardWrapper mt-2">
         <div class="products__create__main">
             <div class="products__create__main--addInfo card py-2 px-2 bg-white">
+
+                <div class="field_box">
                 <p class="mb-1">Name</p>
                 <input type="text" class="input" v-model="form.title">
+                <span class="errorMessage"></span>
+                </div>
 
+                <div class="field_box">
                 <p class="my-1">Address (optional)</p>
                 <input   class="input" id="specific" ref="el">
                 <input  v-model="form.address" name="address" type="hidden" class="input addresss"  >
+                <span class="errorMessage"></span>
+                </div>
                 
-                
+                <div class="field_box">
                 <p class="my-1">Category</p>
                 <select class="input" v-model="form.category_id" >
                     <option disabled value="0">Select option</option>
                     <option v-for="(category, index) in form.categories" :value="category.id" :key="index">{{ category.name }}</option>
                 </select>
+                <span class="errorMessage"></span>
+                </div>
 
+                
                 <div class="products__create__main--media--images mt-2">
                    <ul class="products__create__main--media--images--list list-unstyled">
                        <li class="products__create__main--media--images--item">
@@ -264,27 +285,39 @@ onMounted(() => {
                 
                 <!-- Product unit -->
                 <div class="my-3">
+                    <div class="field_box">
                     <p>Longitude and Latitude</p>
                     <input type="text" class="input longlat" name="longlat" v-model="form.longlat" >
+                    <span class="errorMessage"></span>
+                </div>
                 </div>
                 
 
                 <!-- Product invrntory -->
                 <div class="my-3">
+                    <div class="field_box">
                     <p>Website</p>
                     <input type="text" class="input" v-model="form.website">
+                    <span class="errorMessage"></span>
+                </div>
                 </div>
                 
 
                 <!-- Product Price -->
                 <div class="my-3">
+                    <div class="field_box">
                     <p>Email</p>
                     <input type="text" class="input" v-model="form.email">
+                    <span class="errorMessage"></span>
+                </div>
                 </div>
 
                 <div class="my-3">
+                    <div class="field_box">
                     <p>Phone</p>
                     <input type="text" class="input" v-model="form.phone">
+                    <span class="errorMessage"></span>
+                </div>
                 </div>
             </div>
 

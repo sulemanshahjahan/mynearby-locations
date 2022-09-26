@@ -382,10 +382,6 @@
     li.nav-item{
       display:inline-block;
     }
-    ul.navbar-nav {
-    display: inline-block !important;
-    width: 66%  !important;
-    text-align: center  !important;
-}
+    
   }
   </style>

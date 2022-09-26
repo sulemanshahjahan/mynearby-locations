@@ -1,7 +1,7 @@
 <template>
 
 
-    <div class="row">
+    <div class="row flex_remove">
         <div class="col side">
           <form class="ui segment large form" @submit.prevent="find_closest_markers">
       <div class="ui segment">
@@ -54,11 +54,14 @@
             <div class="custom-img-box"> <img v-if="dealer.photo" :src="ourImage(dealer.photo)" width="100" height="100"></div>
             <div class="custom-location-text">
             <div class="header"><h2>{{dealer.title}} </h2></div>
-            <div class="meta"><i class="fa fa-globe" aria-hidden="true"></i> {{dealer.address}}</div>
+            <p class="meta"><i class="fa fa-location" aria-hidden="true"></i> {{dealer.address}}</p>
+           
+            <p class="meta"><i class="fa fa-envelope" aria-hidden="true"></i> {{dealer.email}}</p>
           </div>
           <div class="dealer-buttons">
             <button class="ui button view-on-map"  @click="showInfoWindow(dealer.id)">View On Map</button>
             <button class="ui button"  @click="getDirection(dealer, dealer.id, dealer.address)">Get Directions</button>
+            <button class="ui button" >Contact {{ categories[dealer.category_id - 1].name }}</button>
           </div>
         
           </div>  
@@ -68,14 +71,14 @@
             <h4>No dealers available at this location.</h4>
         </div>
         </div>
-        <div class="col-9">
+        <div class="col">
             <div class="map-parent">
               <div class="route_details">
                 <p class="origin-add"><strong>From: </strong>{{this.address}}</p>
                 <p class="destination-add"><strong>To: </strong>{{this.destination}}</p>
                 <hr />
                 <div class="distance">
-                  <span id="distance-text">0</span> <span id="duration-text">0</span>
+                  <span id="distance-text">0</span> <span id="duration-text">0</span> <span><i class="fa fa-car" aria-hidden="true"></i></span>
                 </div>
               </div>
               <div class="ten wide column map-holder" ref="map"> </div>
@@ -325,10 +328,11 @@ getDirection(dealer, index, address){
     margin-right: -10px;
     border: 1px solid rgba(0,0,0,.4); 
     }
-    .col.side{
-      padding-left: 25px;
+    .col.side {
+    padding-left: 25px;
+    max-width: 504px;
     padding-right: 0;
-    }
+}
     .locations img{
       border-top-left-radius: 10px;
       overflow: hidden;
@@ -395,5 +399,40 @@ a[href^="https://maps.google.com/maps"]{display:none !important}
 }
 .gmnoprint div {
     background:none !important;
+}
+@media(max-width:767px){
+  .flex_remove{
+    display: block !important;
+  }
+  .col.side {
+    width:100%;
+    padding:0 20px;
+  }
+  .locations {
+    height: 245px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin-right: 0;
+    border: 1px solid rgba(0,0,0,.4);
+    margin-bottom: 16px;
+}
+.map-holder {
+    height: 280px;
+}
+.route_details {
+    position: absolute;
+    z-index: 9;
+    width: 95%;
+    padding: 10px;
+    background: #00181ceb;
+    right: 2.5%;
+    top: auto;
+
+    bottom: 0;
+}
+.dealer-buttons .ui.button {
+    margin-right: 2px;
+    font-size: 12px;
+}
 }
 </style>

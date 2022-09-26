@@ -70,18 +70,18 @@ import router from '../../router';
               
               <div class="customers__titlebar dflex justify-content-between align-items-center">
                   <div class="customers__titlebar--item">
-                      <h1 class="my-1">Locations</h1>
+                      <h1 class="my-1">Dealers</h1>
                   </div>
                   <div class="customers__titlebar--item">
                       <button class="btn btn-secondary my-1" @click="newLocation" >
-                          Add Location
+                          Add Dealer
                       </button>
                   </div>
               </div>
       
               <div class="table--heading mt-2 products__list__heading " style="padding-top: 20px;background:#FFF">
                   <!-- <p class="table--heading--col1">&#32;</p> -->
-                  <p class="table--heading--col1">image</p>
+                  <p class="table--heading--col1">Image</p>
                   <p class="table--heading--col2">Name</p>
                   <p class="table--heading--col4">Address</p>
                   <p class="table--heading--col3">Email</p>
@@ -95,7 +95,7 @@ import router from '../../router';
                       <img class="products__list__item--img" :src="ourImage(item.photo)"  style="height: 40px;" v-if="item.photo">
                   </div>
                   <a href="# " class="table--items--col2" @click="onEdit(item.id)">{{item.title}}</a>
-                  <p class="table--items--col2">{{item.address}}</p>
+                  <p class="table--items--col2 four">{{item.address}}</p>
                   <p class="table--items--col3">{{item.email}}</p>     
                   <div>     
                       <button class="btn-icon btn-icon-success" @click="onEdit(item.id)">
@@ -119,5 +119,20 @@ import router from '../../router';
 <style scoped>
 h1.my-1{
     color:#fff;
+}
+@media(max-width:768px){
+    .col.side {
+    padding-left: 25px;
+    max-width: 100%;
+    padding-right: 0;
+    width: 100%;
+    padding: 0px 20px;
+}
+.table--heading--col3, .table--items--col3, .table--heading--col4, .table--items--col2.four{
+    display: none;
+}
+.products__list__item, .products__list__heading {
+    grid-template-columns: 50px 150px 120px;
+}
 }
 </style>
