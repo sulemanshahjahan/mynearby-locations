@@ -16,7 +16,7 @@
 
         </ul>
 
-        <h4 v-if="$store.getters.getToken != 0" class="align-right" style="float:right;">Hello:  {{$store.getters.getName}}</h4>
+        <h4 v-if="$store.getters.getToken != 0" class="align-right" style="float:right;">Greetings,  {{$store.getters.getName}}!</h4>
     </nav>
 
     <router-view></router-view>
