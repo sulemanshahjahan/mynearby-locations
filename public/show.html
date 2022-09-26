@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html >
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>Laravel</title>
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+    </head>
+    <body class="antialiased">
+        <div id="appsss"></div>
+       
+    </body>
+	<script>
+	$.ajax({
+    url: 'http://localhost:8000/',
+    type: 'GET',
+    success: function(res) {
+        var headline = $(res.responseText).find('a.tsh').text();
+        $('#appsss').html(res);
+    }
+});
+	</script>
+</html>

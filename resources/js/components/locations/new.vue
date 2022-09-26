@@ -3,7 +3,9 @@
     import router from '../../router';
     import ApiCall from '../../services/APICalls'; 
     import Maps from '../../services/Maps'; 
-    
+    import { useStore } from 'vuex'
+
+    const store = useStore()
 
     let form = ref({
         title: '',
@@ -16,6 +18,7 @@
         website: '',
         categories: '',
         category_id: 0,
+        company_id: store.getters.getCompanyID
     });
 
     let locAddress = '';
@@ -83,7 +86,7 @@
         formData.append('phone', form.value.phone);
         formData.append('website', form.value.website);
         formData.append('category_id', form.value.category_id);
-
+        formData.append('company_id', form.value.company_id);
 
         axios.post("/api/add_location", formData)
             .then((response)=>{
@@ -95,7 +98,8 @@
                 form.value.email = '',
                 form.value.website = '',
                 form.value.phone = '',
-                form.value.category_id = 0
+                form.value.category_id = 0,
+                form.value.company_id = 0
 
                 router.push({name: 'Dashboard'})
 
@@ -184,7 +188,7 @@ onMounted(() => {
     <div class="products__create__titlebar dflex justify-content-between align-items-center">
         <div class="products__create__titlebar--item">
             
-            <h1 class="my-1">Add Location</h1>
+            <h1 class="my-1">Add Location {{form.company_id}}</h1>
         </div>
         <div class="products__create__titlebar--item">
             

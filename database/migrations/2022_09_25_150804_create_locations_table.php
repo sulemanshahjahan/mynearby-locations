@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('marker_icon')->nullable();
             $table->string('photo')->nullable();
             $table->foreignId('category_id')->constrained();
+            $table->string('company_id');
+            
             $table->timestamps();
         });
     }

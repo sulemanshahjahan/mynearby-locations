@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\CategoryController;
+header('Access-Control-Allow-Origin: http://localhost:8000');
 
 /*
 |--------------------------------------------------------------------------

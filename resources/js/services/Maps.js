@@ -5,6 +5,7 @@ import store from '../store/index.js';
   var $dealers;
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
+  var maps;
 export default{
 
     initialize(lat, long, $refs, dealers){
@@ -12,8 +13,54 @@ export default{
       this.origLng = long;
       this.$ref = $refs;
       this.$dealers = dealers;
-      const maps = new google.maps.Map($refs, {
+      maps = new google.maps.Map($refs, {
         zoom: 13,
+        animation: google.maps.Animation.DROP,
+        mapTypeControlOptions: {
+          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+          position: google.maps.ControlPosition.BOTTOM_CENTER,
+        },
+      fullscreenControlOptions: {
+          position: google.maps.ControlPosition.LEFT_BOTTOM,
+      },
+          styles: [
+            
+           
+            {
+              
+    featureType: "all",
+    stylers: [
+      { visibility: "off" }
+    ]
+  },
+  {
+    featureType: "road",
+    stylers: [
+      { visibility: "on" },
+      {color: "#00181c"}
+    ]
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#ffffff" }],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.stroke",
+    stylers: [{ visibility: "ffffff" }],
+  },
+  {
+    featureType: "landscape",
+    elementType: "geometry",
+    stylers: [
+      { visibility: "on" },
+      {color: "#00434c"}
+    ]
+  },
+ 
+  
+          ],
         center: new google.maps.LatLng(lat, long),
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
@@ -79,7 +126,7 @@ export default{
           map: maps,
           title: locations[i].title,
           address: locations[i].address,
-          draggable:true,
+          draggable:false,
           icon: icon,
           animation: google.maps.Animation.DROP,
           placeID:  locations[i].id
@@ -92,9 +139,10 @@ export default{
               <p style="color:black;">${place.address}</p> <br>
               <a href="${place.website}" target="_blank">${place.website}</a>`);
               infowindow.open(maps, marker);
-              
+              directionsDisplay.setDirections(null);
+              directionsDisplay.setMap(null);
 
-              jQuery('div[data-id=dealer-'+placeID+']').trigger('click');
+              jQuery('div[data-id=dealer-'+placeID+'] .view-on-map').trigger('click');
              
           }
 
@@ -115,15 +163,6 @@ export default{
 showDistance(dealer){
   const str = dealer.longlat;
         const arr = str.split(',');
-
-        const maps = new google.maps.Map(this.$ref, {
-          zoom: 13,
-          center: new google.maps.LatLng(parseFloat(this.origLat), parseFloat(this.origLng)),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        });
-
-
-
   directionsService.route({
     origin: { lat: parseFloat(this.origLat), lng:  parseFloat(this.origLng) },
     destination: { lat: parseFloat(arr[0]), lng:parseFloat(arr[1]) },
@@ -136,6 +175,8 @@ showDistance(dealer){
       jQuery('#duration-text').html(response.routes[0].legs[0].duration.text);
       directionsDisplay.setDirections(response);
       directionsDisplay.setMap(maps);
+      jQuery('.route_details').fadeIn('slow');
+      infowindow.close();
     } else {
       alert('Directions request failed due to ' + status);
     }

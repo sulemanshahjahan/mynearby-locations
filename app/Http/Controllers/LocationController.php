@@ -25,6 +25,7 @@ class LocationController extends Controller
         $location->phone = $request->phone;
         $location->website = $request->website;
         $location->category_id = $request->category_id;
+        $location->company_id = $request->company_id;
 
         if($request->marker_icon != ""){
             $strpos = strpos($request->marker_icon, ';');

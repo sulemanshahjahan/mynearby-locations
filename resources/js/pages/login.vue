@@ -39,6 +39,7 @@
                 await axios.post('/api/login',form).then(res=>{
                     if(res.data.success){
                         store.dispatch('setName',res.data.data.name);
+                        store.dispatch('setCompanyID',res.data.data.company_id);
                         store.dispatch('setToken',res.data.data.token);
                         router.push({name:'Dashboard'})
                     }else{

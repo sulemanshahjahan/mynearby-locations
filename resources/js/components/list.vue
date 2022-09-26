@@ -1,4 +1,6 @@
 <template>
+
+
     <div class="row">
         <div class="col side">
           <form class="ui segment large form" @submit.prevent="find_closest_markers">
@@ -55,7 +57,7 @@
             <div class="meta"><i class="fa fa-globe" aria-hidden="true"></i> {{dealer.address}}</div>
           </div>
           <div class="dealer-buttons">
-            <button class="ui button"  @click="showInfoWindow(dealer.id)">View On Map</button>
+            <button class="ui button view-on-map"  @click="showInfoWindow(dealer.id)">View On Map</button>
             <button class="ui button"  @click="getDirection(dealer, dealer.id, dealer.address)">Get Directions</button>
           </div>
         
@@ -69,8 +71,9 @@
         <div class="col-9">
             <div class="map-parent">
               <div class="route_details">
-                <div class="origin-add"><strong>From: </strong>{{this.address}}</div>
-                <div class="destination-add"><strong>To: </strong>{{this.destination}}</div>
+                <p class="origin-add"><strong>From: </strong>{{this.address}}</p>
+                <p class="destination-add"><strong>To: </strong>{{this.destination}}</p>
+                <hr />
                 <div class="distance">
                   <span id="distance-text">0</span> <span id="duration-text">0</span>
                 </div>
@@ -292,37 +295,21 @@ import dealerCards from './locations/dealerCard.vue';
         return "/upload/" + img
     },
     showInfoWindow(index) {
-      
-
-      if(this.directionVuew == 1){
-        
-        jQuery('.ui.button.full-width').trigger('click');
-        this.directionVuew = 0;
-        setTimeout(function(){
-          this.directionVuew = 0;
-google.maps.event.trigger(gmarkers[index], 'click');
-
-},1500)
-this.directionVuew = 0;
-      }else{
+        jQuery('.route_details').fadeOut('slow');
         google.maps.event.trigger(gmarkers[index], 'click');
-      }
-      
-this.activeIndex = index ;
-
-
-  
-
-
-jQuery('.content.item').removeClass('active');
-jQuery('div[data-id=dealer-'+ index+']').addClass('active');
+        this.activeIndex = index ;
+        jQuery('.content.item').removeClass('active');
+        jQuery('div[data-id=dealer-'+ index+']').addClass('active');
+        jQuery('.locations').animate({
+          scrollTop: jQuery('.locations>div.active').offset().top - 50
+        },250)
 },
 getDirection(dealer, index, address){
-  this.directionVuew = 1;
-  this.destination = dealer.address;
-  jQuery('.content.item').removeClass('active');
-jQuery('div[data-id=dealer-'+ index+']').addClass('active');
-  Maps.showDistance(dealer);
+        this.directionVuew = 1;
+        this.destination = dealer.address;
+        jQuery('.content.item').removeClass('active');
+        jQuery('div[data-id=dealer-'+ index+']').addClass('active');
+        Maps.showDistance(dealer);
 }
         }
     }
@@ -371,24 +358,42 @@ jQuery('div[data-id=dealer-'+ index+']').addClass('active');
     z-index: 9;
     width: 350px;
     padding: 10px;
-    background: #07a1a1bf;
+    background: #00181ceb;
     right: 10px;
     top: 65px;
+    display: none;
 }
 .distance{
   width:100%;
   text-align:center;
 }
+.route_details p{
+  font-size: 14px;
+}
+.route_details p strong{
+  color: #00dfdf;  
+}
 .distance>span {
-    width: auto;
-    /* height: 30px; */
-    background: #024a56;
+  width: auto;
+    background: #008f8f;
     color: white;
     text-align: center;
     margin-right: 10px;
     display: inline-block;
     padding: 2px 10px;
     font-size: 15px;
-    margin-top:5px;
+    margin-top: 5px;
+}
+.route_details hr{
+  background:rgba(255,255,255,.3)
+}
+a[href^="http://maps.google.com/maps"]{display:none !important}
+a[href^="https://maps.google.com/maps"]{display:none !important}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
+.gmnoprint div {
+    background:none !important;
 }
 </style>
