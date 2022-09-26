@@ -96,9 +96,14 @@
             if($(this).val() == ''){
                 $(this).addClass('error-border');
                 $(this).parents('.field_box').find('.errorMessage').html("This field can't be empty.");
-           
+                $(this).addClass('error');
             }else{
 
+                $(this).removeClass('error');
+        }
+        })
+
+        if($('error').length < 1){
         const formData = new FormData();
         formData.append('title', form.value.title);
         formData.append('address', form.value.address);
@@ -134,7 +139,6 @@
                 console.error(error.data);
             })
         }
-        })
     }
 
     const el = ref({
