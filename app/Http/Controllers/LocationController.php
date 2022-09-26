@@ -72,7 +72,9 @@ class LocationController extends Controller
         $location->email = $request->email;
         $location->phone = $request->phone;
         $location->website = $request->website;
-        $location->company_id = $request->company_id;
+        $location->category_id = $request->category_id;
+
+
         if($location->marker_icon != $request->marker_icon){
             $strpos = strpos($request->marker_icon, ';');
             $sub = substr($request->marker_icon,0,$strpos);
