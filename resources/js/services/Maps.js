@@ -23,44 +23,7 @@ export default{
       fullscreenControlOptions: {
           position: google.maps.ControlPosition.LEFT_BOTTOM,
       },
-          styles: [
-            
-           
-            {
-              
-    featureType: "all",
-    stylers: [
-      { visibility: "off" }
-    ]
-  },
-  {
-    featureType: "road",
-    stylers: [
-      { visibility: "on" },
-      {color: "#00181c"}
-    ]
-  },
-  {
-    featureType: "road",
-    elementType: "labels.text.fill",
-    stylers: [{ color: "#ffffff" }],
-  },
-  {
-    featureType: "road",
-    elementType: "labels.text.stroke",
-    stylers: [{ visibility: "ffffff" }],
-  },
-  {
-    featureType: "landscape",
-    elementType: "geometry",
-    stylers: [
-      { visibility: "on" },
-      {color: "#00434c"}
-    ]
-  },
- 
-  
-          ],
+          
         center: new google.maps.LatLng(lat, long),
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
@@ -117,7 +80,7 @@ export default{
           url: iconPhoto, // url
           scaledSize: new google.maps.Size(50, 50), // scaled size
           origin: new google.maps.Point(0,0), // origin
-          anchor: new google.maps.Point(0, 0) // anchor
+          anchor: new google.maps.Point(14, 36) // anchor
       };
 
 
@@ -126,7 +89,6 @@ export default{
           map: maps,
           title: locations[i].title,
           address: locations[i].address,
-          draggable:false,
           icon: icon,
           animation: google.maps.Animation.DROP,
           placeID:  locations[i].id
