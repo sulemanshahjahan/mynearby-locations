@@ -139,8 +139,15 @@ showDistance(dealer){
       directionsDisplay.setMap(maps);
       jQuery('.route_details').fadeIn('slow');
       infowindow.close();
+      $('.error_route').hide();
+      $('.success_route').fadeIn();
+     
     } else {
-      alert('Directions request failed due to ' + status);
+      directionsDisplay.setDirections(null);
+              directionsDisplay.setMap(null);
+      jQuery('.route_details').fadeIn('slow');
+      $('.success_route').hide();
+      $('.error_route').fadeIn();
     }
   });
   

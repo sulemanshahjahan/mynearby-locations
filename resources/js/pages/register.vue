@@ -21,12 +21,13 @@
                     <div class="form-group">
                         <label for="password">Password:</label>
                         <input type="password" class="form-control" id="password" v-model="form.password">
-                    </div>
+                    </div> 
                     <div class="form-group">
                         <label for="c_password">Confirm Password:</label>
                         <input type="password" class="form-control" id="c_password" v-model="form.c_password">
+                       
                     </div>
-
+       
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
             </div>
@@ -47,14 +48,15 @@
                 email: '',
                 password: '',
                 c_password: '',
+               
             });
             let errors = ref([])
 
             const register = async() =>{
                 await axios.post('/api/register',form).then(res=>{
                     if(res.data.success){
-                       store.dispatch('setToken',res.data.data.token)
-                        router.push({name:'Dashboard'})
+                        store.dispatch('setToken',res.data.data.token)
+                        router.push({name:'Login'})
                     }
                 }).catch(e=>{
                     errors.value = e.response.data.message

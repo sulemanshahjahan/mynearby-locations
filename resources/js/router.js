@@ -18,7 +18,8 @@ const routes = [
     {
         path : '/',
         name : 'List',
-        component : List
+        component : List,
+        props: true
     },
     {
         path : '/login',

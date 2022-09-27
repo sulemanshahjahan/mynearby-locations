@@ -9,8 +9,8 @@ use Image;
 
 class LocationController extends Controller
 {
-    public function get_all_locations(){
-        $locations = Locations::all();
+    public function get_all_locations(Request $request){
+        $locations = Locations::whereIn('company_id', [$request->company_id])->get();
         return response()->json([
             'locations' => $locations
         ],200);

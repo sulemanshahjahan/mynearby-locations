@@ -74,11 +74,16 @@
         <div class="col">
             <div class="map-parent">
               <div class="route_details">
+                <div class="success_route">
                 <p class="origin-add"><strong>From: </strong>{{this.address}}</p>
                 <p class="destination-add"><strong>To: </strong>{{this.destination}}</p>
                 <hr />
                 <div class="distance">
                   <span id="distance-text">0</span> <span id="duration-text">0</span> <span><i class="fa fa-car" aria-hidden="true"></i></span>
+                </div>
+              </div>
+                <div class="error_route">
+                  <p>Sorry, we could not calculate driving directions from "<strong>Your location</strong>" to "<strong>{{this.destination}}</strong>"</p>
                 </div>
               </div>
               <div class="ten wide column map-holder" ref="map"> </div>
@@ -92,6 +97,13 @@
 import APICalls from '../services/APICalls.js';
 import ApiCall from '../services/APICalls.js';
 import Maps from '../services/Maps.js';
+
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex'
+
+   
+
+
 
 import dealerCards from './locations/dealerCard.vue';
     export default{
@@ -120,26 +132,32 @@ import dealerCards from './locations/dealerCard.vue';
             directionVuew: 0,
             radius:900,
             map: null,
-            infoWindow: new google.maps.InfoWindow()
+            infoWindow: new google.maps.InfoWindow(),
+           
 
           }  
         },
-        beforeRouteEnter(routeTo, routeFrom, next) {
-            ApiCall.get_all_locations()
-                .then(response => {
-                next(comp => {
-                    comp.locations = response.data.locations
-                    comp.totalLocations = response.headers['x-total-count'];
-                })
-            })
-            .catch(error => {
-                if (error.response && error.response.status == 404) {
-                   // next({ name: '404Resource', params: { resource: 'pair' } })
-                } else {
-                   // next({ name: 'NetworkError' })
-                }
-            })
-        },
+        
+        created( ) {
+          const store = useStore();
+          axios.get('/api/get_all_locations/?api_token=3F5pqknNyeWXNFJwgf1fVT4gHc8C652EmhEU3zBTQ4kdJSg8NMsto4i6zgcm&company_id=' + store.getters.getCompanyID )
+            .then(response => {
+           
+                this.locations = response.data.locations
+                
+                //comp.totalLocations = response.headers['x-total-count'];
+          
+        })
+        .catch(error => {
+            if (error.response && error.response.status == 404) {
+               // next({ name: '404Resource', params: { resource: 'pair' } })
+            } else {
+               // next({ name: 'NetworkError' })
+            }
+        })
+
+        this.locatorButtonPressed();
+    },
         mounted() {
             APICalls.getCategories()
             .then(response => {

@@ -1,9 +1,12 @@
 <script setup>
     import axios from 'axios';
-
-
 import { onMounted, ref } from 'vue';
 import router from '../../router';
+import { useStore } from 'vuex'
+
+    const store = useStore();
+
+
 
     let locations = ref([]);
 
@@ -17,7 +20,7 @@ import router from '../../router';
     
     const getLocations = async () => {
         try{
-            let response = await axios.get('/api/get_all_locations');
+            let response = await axios.get('/api/get_all_locations/?api_token=3F5pqknNyeWXNFJwgf1fVT4gHc8C652EmhEU3zBTQ4kdJSg8NMsto4i6zgcm&company_id=' + store.getters.getCompanyID );
             locations.value  = response.data.locations;  
         }catch (error) {
             console.error(error.response.data);     // NOTE - use "error.response.data` (not "error")

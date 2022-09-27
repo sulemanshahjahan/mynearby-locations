@@ -404,10 +404,17 @@ main h1 ~ p {
     margin-bottom:0;
 }
 .custom-location-text h2{
-    margin-bottom:8px;
+    margin-bottom: 4px;
 }
 .custom-location-text p{
     margin-bottom:10px;
+}
+.error_route{
+    display: none;
+}
+.text-danger {
+    color: #dc3545!important;
+    display: unset !important;
 }
 @media (max-width:767px) {
     .products__create__cardWrapper, .products__edit__cardWrapper{

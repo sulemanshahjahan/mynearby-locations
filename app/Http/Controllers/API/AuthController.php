@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Auth;
 use Validator;
 use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -27,12 +29,18 @@ class AuthController extends Controller
             return response()->json($response, 400);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $input['c_password'] = bcrypt($input['c_password']);
-        $user = User::create($input);
+     
 
-        $success['token'] = $user->createToken('MyApp')->plainTextToken;
+
+        return User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+            'c_password' => Hash::make($request['c_password']),
+            'api_token' => Str::random(60)
+        ]);
+
+
         $success['name'] = $user->name;
 
         $response = [
