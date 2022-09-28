@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\CategoryController;
+use APP\Http\Middleware\ApiBrowserRestricationMiddleware;
+
+
 header('Access-Control-Allow-Origin: http://localhost:8000');
 
 /*
@@ -40,7 +43,7 @@ Route::get('/nearby',  function  (Request $request)  {
 
  
 
- Route::get('/get_all_locations', [LocationController::class , 'get_all_locations'])->middleware('auth:api');
+ Route::get('/get_all_locations', [LocationController::class , 'get_all_locations'])->middleware('ajaxx');
  Route::get('/get_close_locations/{idArray}', [LocationController::class, 'get_close_locations']);
  Route::post('/add_location', [LocationController::class, 'add_location'])->middleware('auth:api');
  Route::get('/get_single_location/{id}', [LocationController::class, 'get_single_location'])->middleware('auth:api');
