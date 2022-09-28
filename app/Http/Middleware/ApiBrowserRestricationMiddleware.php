@@ -19,7 +19,7 @@ class ApiBrowserRestricationMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (in_array($request->ip(), $this->restrictedIp) == false) {
+        if ($request->getHost() != 'mynearby-locations.herokuapp.com') {
             return response()->json(['message' => "You are not allowed to access this site."]);
         }
         return $next($request);
