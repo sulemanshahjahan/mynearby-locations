@@ -3,6 +3,9 @@
     import router from '../../router';
     import ApiCall from '../../services/APICalls'; 
     import Maps from '../../services/Maps'; 
+    import { useStore } from 'vuex'
+
+    const store = useStore();
     let form = ref({
         id: '',
         title: '',
@@ -55,7 +58,7 @@
 
     const getSingleLocation = async () => {
         try{
-        let response = await axios.get(`/api/get_edit_location/${props.id}`);
+        let response = await axios.get(`/api/get_edit_location/${props.id}?api_token=` + store.getters.getAPIToken);
         form.value = response.data.location;
     }catch (error) {
            alert(error);    // NOTE - use "error.response.data` (not "error")
@@ -213,7 +216,7 @@ const autocomplete = new google.maps.places.Autocomplete(
             Maps.initialize(parseFloat(arr[0]), parseFloat(arr[1]), map.value,  dealer = 'new')
        
        
-    }, 500)
+    }, 1500)
     
 })
 </script>

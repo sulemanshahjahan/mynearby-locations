@@ -60,13 +60,17 @@ const routes = [
         path : '/location/new',
         name : 'locationNew',
         props: true,
-        component : locationNew
+        component : locationNew,
+        meta:{
+            requiresAuth:true
+        }
     },
     {
         path : '/location/edit/:id',
         name : 'locationEdit',
         props: true,
-        component : locationEdit
+        component : locationEdit,
+        
     },
     {
         path : '/category/new',

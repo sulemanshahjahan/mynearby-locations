@@ -28,6 +28,10 @@
     </head>
     <body class="antialiased">
         <div id="app"></div>
+        <script>
+     window.Laravel = <?php echo json_encode(['api_token' => 'DrBpXs0VkSPKD6tQCEyMtMGMOwomdYfXgxpWWQlovkAaJuZWaNNpgSpuoG7C']); ?>;
+    
+</script>
         @vite('resources/js/app.js')
     </body>
 </html>

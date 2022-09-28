@@ -59,6 +59,7 @@ class AuthController extends Controller
             $success['token'] = $user->createToken('MyApp')->plainTextToken;
             $success['name'] = $user->name;
             $success['company_id'] = $user->id;
+            $success['api_token'] = $user->api_token;
             $response = [
                 'success' => true,
                 'data' => $success,

@@ -101,8 +101,12 @@ export default{
               <p style="color:black;">${place.address}</p> <br>
               <a href="${place.website}" target="_blank">${place.website}</a>`);
               infowindow.open(maps, marker);
-              directionsDisplay.setDirections(null);
-              directionsDisplay.setMap(null);
+
+              if(directionsDisplay.map != null && directionsDisplay.directions.status == 'OK'){
+
+                directionsDisplay.setMap(null);
+              }
+              
 
               jQuery('div[data-id=dealer-'+placeID+'] .view-on-map').trigger('click');
              

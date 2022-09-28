@@ -102,7 +102,7 @@
         formData.append('category_id', form.value.category_id);
         formData.append('company_id', form.value.company_id);
 
-        axios.post("/api/add_location", formData)
+        axios.post("/api/add_location?api_token=" + store.state.apiToken, formData)
             .then((response)=>{
                 form.value.title = '',
                 form.value.address = '',

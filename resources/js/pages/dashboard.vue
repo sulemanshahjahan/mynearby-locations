@@ -20,6 +20,7 @@
             const store = useStore();
             function logout(){
                 store.dispatch('removeToken');
+                store.dispatch('removeAPIToken');
                 router.push({name:'List'})
             }
             return {

@@ -7,6 +7,7 @@ const store = createStore({
         name: localStorage.getItem('name') || 0,
         companyID: localStorage.getItem('companyID') || 0,
         token : localStorage.getItem('token') || 0,
+        apiToken: localStorage.getItem('api_token') || 0,
         markers: []
     },
 
@@ -22,6 +23,9 @@ const store = createStore({
         UPDATE_COMPANYID(state,payload){
             state.companyID = payload
         },
+        UPDATE_APITOKEN(state,payload){
+            state.apiToken = payload
+        },
         ADD_MARKER(state, marker){
             state.markers.push(marker)
         }
@@ -36,6 +40,14 @@ const store = createStore({
         removeToken(context){
             localStorage.removeItem('token');
             context.commit('UPDATE_TOKEN', 0);
+        },
+        setAPIToken(context,payload){
+            localStorage.setItem('api_token',payload)
+            context.commit('UPDATE_APITOKEN',payload)
+        },
+        removeAPIToken(context,payload){
+            localStorage.removeItem('api_token')
+            context.commit('UPDATE_APITOKEN', 0)
         },
         // action to be performed
         setName(context,payload){
@@ -74,6 +86,9 @@ const store = createStore({
         },
         getMarkers: function(state){
             return state.markers
+        },
+        getAPIToken: function(state){
+            return state.apiToken
         }
     }
 

@@ -40,8 +40,10 @@
                     if(res.data.success){
                         store.dispatch('setName',res.data.data.name);
                         store.dispatch('setCompanyID',res.data.data.company_id);
+      
+                        store.dispatch('setAPIToken',res.data.data.api_token)
                         store.dispatch('setToken',res.data.data.token);
-                        router.push({name:'Dashboard'})
+                        //router.push({name:'Dashboard'})
                     }else{
 
                         error.value = res.data.message;
