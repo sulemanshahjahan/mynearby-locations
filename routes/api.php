@@ -43,7 +43,7 @@ Route::get('/nearby',  function  (Request $request)  {
 
  
 
- Route::get('/get_all_locations', [LocationController::class , 'get_all_locations'])->middleware('ajaxx');
+ Route::get('/get_all_locations', [LocationController::class , 'get_all_locations'])->middleware('auth:api');
  Route::get('/get_close_locations/{idArray}', [LocationController::class, 'get_close_locations']);
  Route::post('/add_location', [LocationController::class, 'add_location'])->middleware('auth:api');
  Route::get('/get_single_location/{id}', [LocationController::class, 'get_single_location'])->middleware('auth:api');

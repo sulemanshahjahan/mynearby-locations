@@ -43,7 +43,7 @@
       
                         store.dispatch('setAPIToken',res.data.data.api_token)
                         store.dispatch('setToken',res.data.data.token);
-                        //router.push({name:'Dashboard'})
+                        router.push({name:'Dashboard'})
                     }else{
 
                         error.value = res.data.message;
