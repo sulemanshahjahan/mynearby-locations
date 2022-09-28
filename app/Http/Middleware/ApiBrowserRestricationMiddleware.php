@@ -19,7 +19,7 @@ class ApiBrowserRestricationMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->ip() != '127.0.0.1') {
+        if (in_array($request->ip(), $this->restrictedIp) == false) {
             return response()->json(['message' => "You are not allowed to access this site."]);
         }
         return $next($request);
