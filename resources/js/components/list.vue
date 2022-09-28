@@ -140,7 +140,7 @@ import dealerCards from './locations/dealerCard.vue';
         
         created( ) {
           const store = useStore();
-          const api_token = 'DrBpXs0VkSPKD6tQCEyMtMGMOwomdYfXgxpWWQlovkAaJuZWaNNpgSpuoG7C';
+          const api_token = 'uMaPZCQzRq3PAEKBm4FrkP2yPg33Pj08x70FZic4Plsk3IOnLMICqEykAvY8';
           const company_id = 1;
           axios.get(`/api/get_all_locations?api_token=${api_token}&company_id=${company_id}` )
             .then(response => {
