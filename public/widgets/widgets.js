@@ -6,14 +6,14 @@ var address;
 var XmlFeedGrabber = {
 
   options: {
-    feedUrl: "http://localhost:8000/api/get_all_locations?api_token=DrBpXs0VkSPKD6tQCEyMtMGMOwomdYfXgxpWWQlovkAaJuZWaNNpgSpuoG7C&company_id=1",
+    feedUrl: "/api/get_all_locations?api_token=DrBpXs0VkSPKD6tQCEyMtMGMOwomdYfXgxpWWQlovkAaJuZWaNNpgSpuoG7C&company_id=1",
     itemsCount: 5,
     targetId: "xml-grabber",
     openInNewWindow: true,
     showMedia: true,
     showDescription: false,
     currentTheme: "",
-            loaderUrl: "http://localhost/widgets/loading.gif",
+            loaderUrl: "/widgets/loading.gif",
 	lat: '',
 	lng: '',
 	locations: [],
@@ -85,7 +85,7 @@ messages: {
 	   var linkElement=document.createElement("link");
   linkElement.setAttribute("rel", "stylesheet");
   linkElement.setAttribute("type", "text/css");
-  linkElement.setAttribute("href", 'http://localhost/widgets/app.css');
+  linkElement.setAttribute("href", '/widgets/app.css');
   document.getElementsByTagName("head")[0].appendChild(linkElement);
     var self = this;
         if(!this.validate()) {
@@ -122,7 +122,7 @@ messages: {
               }
         });
         var params = 'company_id=' +  this.options.companyID;
-        xhr.open("POST", "http://localhost/widgets/fetch.php");
+        xhr.open("POST", "/widgets/fetch.php");
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader("dataType", "application/json");
         xhr.send(params);
@@ -303,7 +303,7 @@ messages: {
 				
 				
 				
-					fetch(`http://localhost/widgets/googleAPI.php`, {
+					fetch(`/widgets/googleAPI.php`, {
 						mode: 'cors',
 					  method: 'GET', // or 'PUT'
 					  headers: {
@@ -362,7 +362,7 @@ messages: {
 
             const $idArray = newLocations.join('-');    
 			
-      const URL = `http://localhost/widgets/nearbyLoc.php?arrr=${$idArray}`;
+      const URL = `/widgets/nearbyLoc.php?arrr=${$idArray}`;
 		
       
         fetch(URL, {
