@@ -320,7 +320,7 @@ messages: {
                  document.getElementById('autocomplete').value = response;
               }
         });
-        var params = 'company_id=' +  this.options.companyID;
+        var params = 'lat=' +  this.options.lat + '&lng=' + this.options.lng;
         xhr.open("POST", "https://mynearby-locations.herokuapp.com/widgets/googleAPI.php");
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader("dataType", "application/json");

@@ -9,6 +9,8 @@ header("Access-Control-Allow-Headers: *");
 $params = file_get_contents("php://input");
 parse_str($params, $paramArray);
 
+$lat = $_POST['lat'];
+$lng = $_POST['lng'];
 
 error_reporting(E_ERROR | E_PARSE);
 
@@ -23,7 +25,9 @@ $multiCurl = array();
 // data to be returned
 $result = array();
 
-$ids = ['https://maps.googleapis.com/maps/api/geocode/json?latlng=24.8689338,66.9927378&key=AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM'];
+$ids = ["https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM"];
+
+
 // multi handle
 $mh = curl_multi_init();
 foreach ($ids as $i => $id) {
