@@ -4,9 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\Subscriptions\SubscriptionController;
+
 use App\Http\Controllers\CategoryController;
 use APP\Http\Middleware\ApiBrowserRestricationMiddleware;
-
 
 header('Access-Control-Allow-Origin: http://localhost:8000');
 
@@ -28,6 +29,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function(){
     Route::post('login','login');
     Route::post('register','register');
+    Route::get('/user/setup-intent', 'getSetupIntent');
+    Route::post('/user/payments', 'postPaymentMethods');
+    Route::get('/user/payment-methods', 'getPaymentMethods');
+    Route::post('/user/remove-payment', 'removePaymentMethod');
+    Route::put('/user/subscription', 'updateSubscription');
+    Route::get('/user/currentSubscription', 'currentSubscription');
+    Route::get('/user/isSubscribed', 'isSubscribed');
+    Route::post('/user/cancel_subscription', 'cancel_subscription');
+    
 });
 
 Route::get('/nearby',  function  (Request $request)  {
@@ -42,7 +52,7 @@ Route::get('/nearby',  function  (Request $request)  {
  });
 
  
-
+ Route::get('/plans', [SubscriptionController::class, 'index']);
  Route::get('/get_all_locations', [LocationController::class , 'get_all_locations'])->middleware('auth:api');
  Route::get('/get_close_locations/{idArray}', [LocationController::class, 'get_close_locations']);
  Route::post('/add_location', [LocationController::class, 'add_location'])->middleware('auth:api');
@@ -55,3 +65,8 @@ Route::get('/nearby',  function  (Request $request)  {
  Route::get('/get_all_categories', [CategoryController::class, 'get_all_categories']);
  //Route::get('/add_category', [LocationController::class, 'add_location']);
  //Route::post('/add_category', [LocationController::class, 'add_location']);
+
+ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function(){
+
+});
+

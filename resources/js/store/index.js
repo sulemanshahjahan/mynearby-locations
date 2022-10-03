@@ -8,7 +8,8 @@ const store = createStore({
         companyID: localStorage.getItem('companyID') || 0,
         token : localStorage.getItem('token') || 0,
         apiToken: localStorage.getItem('api_token') || 0,
-        markers: []
+        markers: [],
+        selectedPlan: ''
     },
 
     mutations:{

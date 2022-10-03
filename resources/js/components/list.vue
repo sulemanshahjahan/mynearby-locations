@@ -142,7 +142,7 @@ import dealerCards from './locations/dealerCard.vue';
           const store = useStore();
           const api_token = 'DrBpXs0VkSPKD6tQCEyMtMGMOwomdYfXgxpWWQlovkAaJuZWaNNpgSpuoG7C';
           const company_id = 1;
-          axios.get(`/api/get_all_locations?api_token=${api_token}&company_id=${company_id}` )
+          axios.get('/api/get_all_locations/?api_token='+ store.state.apiToken +'&company_id=' + store.getters.getCompanyID )
             .then(response => {
            
                 this.locations = response.data.locations

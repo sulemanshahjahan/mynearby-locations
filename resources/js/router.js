@@ -4,13 +4,16 @@ import { createWebHistory, createRouter } from "vue-router";
 import register from './pages/register.vue';
 import login from './pages/login.vue';
 import dashboard from './pages/dashboard.vue';
+import plans from './pages/plans.vue';
 import nearby from './pages/nearby.vue';
 import locationIndex from './components/locations/index.vue';
 import locationNew from './components/locations/new.vue';
 import categoryNew from './components/categories/new.vue';
 import locationEdit from './components/locations/edit.vue';
 import dealerLocator from './components/dealerLocator.vue';
+import planManagement from './components/subscriptions/management.vue';
 import List from './components/list.vue';
+import Installation from './components/embed-code.vue';
 import store from './store';
 import NotFound from './components/NotFound.vue';
 
@@ -19,6 +22,12 @@ const routes = [
         path : '/',
         name : 'List',
         component : List,
+        props: true
+    },
+    {
+        path : '/installation',
+        name : 'Installation',
+        component : Installation,
         props: true
     },
     {
@@ -49,6 +58,19 @@ const routes = [
         meta:{
             requiresAuth:true
         }
+    },
+    {
+        path : '/plans',
+        name : 'Plans',
+        component : plans,
+        meta:{
+            requiresAuth:true
+        }
+    },
+    {
+        path: '/manage-plan',
+        name: 'planManagement',
+        component: planManagement
     },
     {
         path : '/locations',

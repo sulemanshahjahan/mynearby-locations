@@ -26,5 +26,8 @@ export default{
     },
     getCategories(){
         return apiClient.get('/api/get_all_categories')
+    },
+    getPlans(){
+        return apiClient.get('/api/plans')
     }
 }

@@ -6,7 +6,7 @@
     import { useStore } from 'vuex'
 
     const store = useStore()
-
+    let isSubscribed = ref(false)
     let form = ref({
         title: '',
         address: '',
@@ -141,12 +141,29 @@
  
 
 onMounted(() => {
+
+    
+         axios.get('/api/user/isSubscribed', {
+        }).then( function( response ){
+           // this.selectedPlan = response.data[0].stripe_price;
+           if(response.data == '400'){
+            isSubscribed.value = false;
+            //jQuery('.container').remove();
+           }else{
+            isSubscribed.value = true;
+            console.log('subscribed');
+           }
+           
+        }.bind(this));
+       
   
     ApiCall.getCategories()
     .then(response => {
         form.value.categories  = response.data.categories;
         
     })
+
+    if(isSubscribed.value == true){
 
   const autocomplete = new google.maps.places.Autocomplete(
     el.value,
@@ -190,20 +207,68 @@ onMounted(() => {
         Maps.initialize(place.geometry.location.lat(), place.geometry.location.lng(), map.value,  dealer = 'new')
       });
 
-      
+    }
 
 })
+
+onUpdated (() => {
+    if(isSubscribed.value == true){
+
+const autocomplete = new google.maps.places.Autocomplete(
+  el.value,
+      {
+        bounds: new google.maps.LatLngBounds(
+          new google.maps.LatLng(45.4215296, -75.6971931)
+        )
+      }
+    );
+ 
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+     // form.address = place.formatted_address;
+
+
+        // Find inputs
+      const input = $("input[name='address']");
+
+      // Set value
+      input.val(jQuery('#specific').val());
+
+      // Create native event
+      const event = new Event('input', { bubbles: true });
+
+      // Dispatch the event on "native" element
+      input.get(0).dispatchEvent(event);
+
+        // Find inputs
+      const longlatput = $("input[name='longlat']");
+
+      // Set value
+      longlatput.val(place.geometry.location.lat() + ', ' + place.geometry.location.lng());
+
+      // Create native event
+      const longlatevent = new Event('input', { bubbles: true });
+
+      // Dispatch the event on "native" element
+      longlatput.get(0).dispatchEvent(longlatevent);
+
+      let dealer;
+      Maps.initialize(place.geometry.location.lat(), place.geometry.location.lng(), map.value,  dealer = 'new')
+    });
+
+  }   
+});
 </script>
 
 <template>
-    <div class="container">
+    <div class="container" >
         <div class="row">
-        <div class="products__create ">
+        <div class="products__create " v-if="isSubscribed"> 
     
-    <div class="products__create__titlebar dflex justify-content-between align-items-center">
+    <div class="products__create__titlebar dflex justify-content-between align-items-center" v-if="isSubscribed">
         <div class="products__create__titlebar--item">
             
-            <h1 class="my-1">Add Dealer </h1>
+            <h1 class="my-1">Add Dealer {{isSubscribed}}</h1>
         </div>
         <div class="products__create__titlebar--item">
             
@@ -227,7 +292,7 @@ onMounted(() => {
 
                 <div class="field_box">
                 <p class="my-1">Address (optional)</p>
-                <input   class="input" id="specific" ref="el">
+                <input   class="input" id="specific" ref="el" >
                 <input  v-model="form.address" name="address" type="hidden" class="input addresss"  >
                 <span class="errorMessage"></span>
                 </div>
@@ -330,7 +395,9 @@ onMounted(() => {
     
 
 </div>
-
+<div v-else>
+    <h2>Please subscribe before you can add dealers</h2>
+</div>
 <div class="ten wide column map-holder" ref="map"></div>
 
 </div>

@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Providers;
-
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
          if(config('app.env') === 'production') {
             \URL::forceScheme('https');
         }
+        Cashier::useCustomerModel(User::class);
     }
 }
