@@ -22,7 +22,7 @@ $multiCurl = array();
 // data to be returned
 $result = array();
 
-$ids = ['/api/get_close_locations/'. $locations_id .'?category_type=1'];
+$ids = ['https://mynearby-locations.herokuapp.com/api/get_close_locations/'. $locations_id .'?category_type=1'];
 // multi handle
 $mh = curl_multi_init();
 foreach ($ids as $i => $id) {

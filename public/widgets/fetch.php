@@ -23,8 +23,8 @@ $multiCurl = array();
 // data to be returned
 $result = array();
 
-$locations = '/api/get_all_locations?api_token=3F5pqknNyeWXNFJwgf1fVT4gHc8C652EmhEU3zBTQ4kdJSg8NMsto4i6zgcm&company_id=' .$url;
-$categories = '/api/get_all_categories';
+$locations = 'https://mynearby-locations.herokuapp.com/api/get_all_locations?api_token=3F5pqknNyeWXNFJwgf1fVT4gHc8C652EmhEU3zBTQ4kdJSg8NMsto4i6zgcm&company_id=' .$url;
+$categories = 'https://mynearby-locations.herokuapp.com/api/get_all_categories';
 
 $ids = [$locations , $categories];
 // multi handle
