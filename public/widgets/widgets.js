@@ -321,7 +321,7 @@ messages: {
               }
         });
         var params = 'company_id=' +  this.options.companyID;
-        xhr.open("POST", "https://mynearby-locations.herokuapp.com/googleAPI.php");
+        xhr.open("POST", "https://mynearby-locations.herokuapp.com/widgets/googleAPI.php");
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader("dataType", "application/json");
         xhr.send(params);
