@@ -13,7 +13,7 @@ var XmlFeedGrabber = {
     showMedia: true,
     showDescription: false,
     currentTheme: "",
-            loaderUrl: "/widgets/loading.gif",
+            loaderUrl: "https://mynearby-locations.herokuapp.com/widgets/loading.gif",
 	lat: '',
 	lng: '',
 	locations: [],
@@ -85,7 +85,7 @@ messages: {
 	   var linkElement=document.createElement("link");
   linkElement.setAttribute("rel", "stylesheet");
   linkElement.setAttribute("type", "text/css");
-  linkElement.setAttribute("href", '/widgets/app.css');
+  linkElement.setAttribute("href", 'https://mynearby-locations.herokuapp.com/widgets/app.css');
   document.getElementsByTagName("head")[0].appendChild(linkElement);
     var self = this;
         if(!this.validate()) {
@@ -122,7 +122,7 @@ messages: {
               }
         });
         var params = 'company_id=' +  this.options.companyID;
-        xhr.open("POST", "/widgets/fetch.php");
+        xhr.open("POST", "https://mynearby-locations.herokuapp.com/widgets/fetch.php");
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader("dataType", "application/json");
         xhr.send(params);
@@ -303,7 +303,7 @@ messages: {
 				
 				
 				
-					fetch(`/widgets/googleAPI.php`, {
+					fetch(`https://mynearby-locations.herokuapp.com/widgets/googleAPI.php`, {
 						mode: 'cors',
 					  method: 'GET', // or 'PUT'
 					  headers: {
@@ -362,7 +362,7 @@ messages: {
 
             const $idArray = newLocations.join('-');    
 			
-      const URL = `/widgets/nearbyLoc.php?arrr=${$idArray}`;
+      const URL = `https://mynearby-locations.herokuapp.com/widgets/nearbyLoc.php?arrr=${$idArray}`;
 		
       
         fetch(URL, {
