@@ -18,13 +18,12 @@ error_reporting(E_ERROR | E_PARSE);
 
  
 
-$url = 'https://mynearby-locations.herokuapp.com/api/get_all_locations?api_token=3F5pqknNyeWXNFJwgf1fVT4gHc8C652EmhEU3zBTQ4kdJSg8NMsto4i6zgcm&company_id=4';
 
 $multiCurl = array();
 // data to be returned
 $result = array();
 
-$ids = ['https://mynearby-locations.herokuapp.com/api/nearby/?lat=24.8689338&long=66.9927378'];
+$ids = ['https://maps.googleapis.com/maps/api/geocode/json?latlng=24.8689338,66.9927378&key=AIzaSyC7n8dM5sU7EeMwfITFTaM1pRb3lUD1_gM'];
 // multi handle
 $mh = curl_multi_init();
 foreach ($ids as $i => $id) {

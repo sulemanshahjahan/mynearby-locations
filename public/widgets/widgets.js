@@ -303,23 +303,29 @@ messages: {
 				
 				
 				
-					fetch(`https://mynearby-locations.herokuapp.com/widgets/googleAPI.php`, {
-						mode: 'cors',
-					  method: 'GET', // or 'PUT'
-					  headers: {
-						'Content-Type': 'application/json',
-					  }
-					})
-					  .then((response) => response.json())
-					  .then((data) => {
-						  data = JSON.parse(data[0]);
-						  data = data['results'][0].formatted_address;
-						  document.getElementById('autocomplete').value = data;
-					  })
-					  .catch((error) => {
-						console.error('Error:', error);
-					  });
-				
+			
+
+
+          if (window.XMLHttpRequest) {
+            var xhr = new XMLHttpRequest();
+        } else {
+            var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhr.addEventListener("readystatechange", function () {
+              if (this.readyState === 4 && this.status === 200) {
+                 response = JSON.parse(this.responseText);
+                 response = JSON.parse(response[0]);
+                 response = response['results'][0].formatted_address;
+
+                 document.getElementById('autocomplete').value = response;
+              }
+        });
+        var params = 'company_id=' +  this.options.companyID;
+        xhr.open("POST", "https://mynearby-locations.herokuapp.com/googleAPI.php");
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader("dataType", "application/json");
+        xhr.send(params);
+          
                
             },
             find_closest_markers(){
