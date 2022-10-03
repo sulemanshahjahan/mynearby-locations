@@ -26,22 +26,7 @@
 <div id="xml-grabber">Loading</div>
 </div>
 </template>
-<script>
-    (function(doc, tag, id){
-         var js = doc.getElementsByTagName(tag)[0];
-         if (doc.getElementById(id)) {return;}
-         js = doc.createElement(tag); js.id = id;
-         js.src = "http://localhost/widgets/widgets.js";
-         js.type = "text/javascript";
-         doc.body.appendChild(js);
-       }(document, 'script', 'feeder'));
-    window.onload = function() {
-        XmlFeedGrabber.setOptions({
-            companyID: 4
-        });
-           XmlFeedGrabber.render();
-       }
-</script>
+
 
 <style>
     textarea{
