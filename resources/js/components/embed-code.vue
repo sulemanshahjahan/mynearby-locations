@@ -1,8 +1,6 @@
 <template>
     <div class="container">
-    <div id='storemapper' style='width:100%;'>
-  <p>Dealer Locator is loading from <a href='https://www.pamlicostores.com'>Pamlico Dealer Locator</a>...</p>
-</div>
+ 
 <textarea readonly>
     <script>
         (function(doc, tag, id){
@@ -15,22 +13,22 @@
            }(document, 'script', 'xml-feed-grabber'));
         window.onload = function() {
             XmlFeedGrabber.setOptions({
-                apiToken: {{ this.$store.state.apiToken }},
+                //apiToken: {{ this.$store.state.apiToken }},
                 companyID: {{this.$store.state.companyID}}
             });
                XmlFeedGrabber.render();
            }
     </script>
 </textarea>
-
-<div id="xml-grabber">Loading</div>
 </div>
 </template>
 
 
 <style>
     textarea{
-        width:100%;
-        height:450px;
+        width: 100%;
+        height: 300px;
+        background: #00181c;
+        color: white;
     }
 </style>

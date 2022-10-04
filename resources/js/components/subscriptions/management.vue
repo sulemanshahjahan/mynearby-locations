@@ -195,7 +195,7 @@ import { useRoute } from 'vue-router';
                 status: this.status
             }).then( function( response ){
                 if(response.status == 200 ){
-                    alert('subscribed successfully.');
+                    alert('Cancelled successfully.');
                 }
             }.bind(this));
         },
