@@ -41,7 +41,8 @@
 
 #pam_store_location .col {
     float: left;
-    max-width: 380px;
+    max-width: 400px;
+    margin-right: 10px;
 }
 #map{
     margin-top:0 !important;
@@ -50,8 +51,10 @@
     background-color: #007e5b !important;
 }
 .ui.button, .dot.circle.icon {
-    background-color: #08afaf  !important;
+    background-color: #bb1e26 !important;
     color: white;
+    border: 0;
+    flex: 1;
 
 }
 .bg-dark-custom {
@@ -76,10 +79,11 @@
     opacity: .8 !important;
 }
 .locations .content {
-    background: #00181c;
+    background: #000000;
     margin-bottom: 10px;
     padding: 10px;
     color: #fff;
+    font-family: arial;
 }
 .my-3 {
     margin-top: 14px !important;
@@ -235,7 +239,7 @@
 
 
 div#pam_store_location {
-    float: left;
+    display: flex;
     width: 100%;
 }
 
@@ -417,8 +421,10 @@ div#pam_store_location {
 .custom-location-text h2{
     margin-bottom: 4px;
 }
-.custom-location-text p{
-    margin-bottom:10px;
+.custom-location-text p {
+    margin-bottom: 10px;
+    font-size: 13px;
+    display: flex;
 }
 .error_route{
     display: none;
@@ -436,6 +442,14 @@ div#pam_store_location {
     padding: 1em 1em;
     border-radius: 0.28571429rem;
     border: 1px solid rgba(34,36,38,.15);
+}
+.locations img.email {
+    height: 13px;
+    margin-right: 5px;
+    margin-left: 4px;
+}
+#xml-grabber{
+    text-align: center;
 }
 .ui.segment:last-child {
     margin-bottom: 0;
@@ -483,36 +497,31 @@ border: 1px solid rgba(0,0,0,.4);
 }
 .locations h2{
     font-size:18px;
-    padding: 10px;
+
 }
 .col.side {
 padding-left: 25px;
 max-width: 504px;
 padding-right: 0;
 }
-.locations img{
-  border-top-left-radius: 10px;
-  overflow: hidden;
-  border-bottom-right-radius: 10px;
+.locations img {
+    float: left;
+    height: 20px;
 }
 .custom-img-box{
   float:left;
 }
-.custom-location-text{
-  display: inline-block;
-  width: 65%;
-  padding-left: 10px;
-}
+
 .dealer-buttons{
-  display: inline-block;
- width:100%;
- margin:10px 0 0 0; 
+    display: flex;
+    width: 100%;
+    margin: 10px 0 0 0;
 }
-.dealer-buttons .ui.button {
-    margin-right: 0;
-    padding: 8px 12px;
-    cursor: pointer;
-    width: 114px;
+.dealer-buttons button {
+    padding: 8px 10px;
+    margin-right: 12px;
+    font-size: 14px;
+    cursor:pointer;
 }
 .ui.form .field .two{
     display: none;

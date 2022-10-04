@@ -210,9 +210,9 @@ messages: {
             
             <div class="custom-location-text">
             <div class="location_header"><h2>${dealer.title}</h2></div>
-            <p class="meta"><i class="fa fa-location" aria-hidden="true"></i> ${dealer.address}</p>
+            <p class="meta"><img src="https://mynearby-locations.herokuapp.com/widgets/img/location.png"> ${dealer.address}</p>
            
-            <p class="meta"><i class="fa fa-envelope" aria-hidden="true"></i> ${dealer.email}</p>
+            <p class="meta"><img src="https://mynearby-locations.herokuapp.com/widgets/img/email.png" class="email"> ${dealer.email}</p>
           </div>
           <div class="dealer-buttons">
             <button class="ui button view-on-map"  onclick="XmlFeedGrabber.showInfoWindow(${dealer.id})">View On Map</button>
@@ -389,20 +389,20 @@ messages: {
 					
 							data.forEach(function(dealer) {
 								html = `<div class="content item">
-								
-								<div class="custom-location-text">
-								<div class="location_header"><h2>${dealer.title}</h2></div>
-								<p class="meta"><i class="fa fa-location" aria-hidden="true"></i> ${dealer.address}</p>
-							   
-								<p class="meta"><i class="fa fa-envelope" aria-hidden="true"></i> ${dealer.email}</p>
-							  </div>
-							  <div class="dealer-buttons">
+            
+                <div class="custom-location-text">
+                <div class="location_header"><h2>${dealer.title}</h2></div>
+                <p class="meta"><img src="https://mynearby-locations.herokuapp.com/widgets/img/location.png"> ${dealer.address}</p>
+               
+                <p class="meta"><img src="https://mynearby-locations.herokuapp.com/widgets/img/email.png" class="email"> ${dealer.email}</p>
+              </div>
+              <div class="dealer-buttons">
                 <button class="ui button view-on-map"  onclick="XmlFeedGrabber.showInfoWindow(${dealer.id})">View On Map</button>
                 <button class="ui button" data-dealer="${dealer.longlat}" data-dealer-id="${dealer.id}" data-dealer-address="${dealer.address}"  onclick="XmlFeedGrabber.getDirection(this)">Get Directions</button>
                 <button class="ui button" >Contact </button>
-							  </div>
-							
-							  </div>  `;
+              </div>
+            
+              </div>  `;
 							});
 							
 							
