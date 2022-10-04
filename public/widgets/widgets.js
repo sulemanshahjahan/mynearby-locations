@@ -6,14 +6,14 @@ var address;
 var XmlFeedGrabber = {
 
   options: {
-    feedUrl: "/api/get_all_locations?api_token=DrBpXs0VkSPKD6tQCEyMtMGMOwomdYfXgxpWWQlovkAaJuZWaNNpgSpuoG7C&company_id=1",
+    feedUrl: "xxx",
     itemsCount: 5,
     targetId: "xml-grabber",
     openInNewWindow: true,
     showMedia: true,
     showDescription: false,
     currentTheme: "",
-            loaderUrl: "https://mynearby-locations.herokuapp.com/widgets/loading.gif",
+            loaderUrl: "https://mynearby-locations.herokuapp.com/widgets/img/loading.gif",
 	lat: '',
 	lng: '',
 	locations: [],
@@ -232,7 +232,7 @@ messages: {
                 <p class="destination-add"><strong>To: </strong> <span id="destination"></span></p>
                 <hr />
                 <div class="distance">
-                  <span id="distance-text">0</span> <span id="duration-text">0</span> <span><i class="fa fa-car" aria-hidden="true"></i></span>
+                  <span id="distance-text">0</span> <span id="duration-text">0</span> <span><img src="https://mynearby-locations.herokuapp.com/widgets/img/car.png" width="32"></span>
                 </div>
               </div>
                 <div class="error_route">
@@ -354,7 +354,7 @@ messages: {
       
             closest_markers.map((item, index) => {
                
-              if(item.distance < 5000){
+              if(item.distance < 15000){
                   
                     newLocations.push(item.marker.placeID);
                     
@@ -386,9 +386,9 @@ messages: {
 						  data = data['location'];
 						 
 						  console.log(data);
-						   html = '<div class="locations" id="locations">';
+					
 							data.forEach(function(dealer) {
-								html += `<div class="content item">
+								html = `<div class="content item">
 								
 								<div class="custom-location-text">
 								<div class="location_header"><h2>${dealer.title}</h2></div>
@@ -397,14 +397,14 @@ messages: {
 								<p class="meta"><i class="fa fa-envelope" aria-hidden="true"></i> ${dealer.email}</p>
 							  </div>
 							  <div class="dealer-buttons">
-								<button class="ui button view-on-map"  on-click="showInfoWindow(dealer.id)">View On Map</button>
-								<button class="ui button"  on-click="getDirection(dealer, dealer.id, dealer.address)">Get Directions</button>
-								<button class="ui button" >Contact </button>
+                <button class="ui button view-on-map"  onclick="XmlFeedGrabber.showInfoWindow(${dealer.id})">View On Map</button>
+                <button class="ui button" data-dealer="${dealer.longlat}" data-dealer-id="${dealer.id}" data-dealer-address="${dealer.address}"  onclick="XmlFeedGrabber.getDirection(this)">Get Directions</button>
+                <button class="ui button" >Contact </button>
 							  </div>
 							
 							  </div>  `;
 							});
-							html += '</div>';
+							
 							
 							document.getElementById('locations').innerHTML = html;
 							this.initialize( this.options.lat, 

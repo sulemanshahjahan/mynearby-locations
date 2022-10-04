@@ -25,7 +25,7 @@
     margin: 0;
     outline: 0;
     -webkit-appearance: none;
-
+    tap-highlight-color: rgba(255,255,255,0);
     line-height: 1.21428571em;
     padding: 0.67857143em 1em;
     font-size: 1em;
@@ -481,10 +481,6 @@ overflow-y: scroll;
 margin-right: -10px;
 border: 1px solid rgba(0,0,0,.4); 
 }
-.locations h2{
-    font-size:18px;
-    padding: 10px;
-}
 .col.side {
 padding-left: 25px;
 max-width: 504px;
@@ -508,37 +504,8 @@ padding-right: 0;
  width:100%;
  margin:10px 0 0 0; 
 }
-.dealer-buttons .ui.button {
-    margin-right: 0;
-    padding: 8px 12px;
-    cursor: pointer;
-    width: 114px;
-}
-.ui.form .field .two{
-    display: none;
-}
-.dot.circle{
-    display: none;
-}
-.ui.button.full-width {
-    width: 100%;
-    padding: 10px;
-    margin: 0;
-    border: 0;
-}
-.ui.input{
-    border-radius: 0 !important;
-}
-.distance>span img {
-    height: 12px;
-    width: auto;
-    position: relative;
-    top: 1px;    
-}
-#autocomplete {
-    width: 100%;
-    font-size: 14px;
-    border-radius: 0;
+.dealer-buttons .ui.button{
+ margin-right:10px;
 }
 .map-parent {
 position: relative;
@@ -603,7 +570,6 @@ margin-right: 0;
 border: 1px solid rgba(0,0,0,.4);
 margin-bottom: 16px;
 }
-
 .map-holder {
 height: 280px;
 }
