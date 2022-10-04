@@ -42,6 +42,9 @@
     float: left;
     max-width: 380px;
 }
+#map{
+    margin-top:0 !important;
+}
 .active{
     background-color: #007e5b !important;
 }
