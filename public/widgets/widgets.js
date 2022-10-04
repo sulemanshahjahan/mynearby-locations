@@ -143,9 +143,7 @@ messages: {
 				address = place.formatted_address;
                 this.options.lat = place.geometry.location.lat();
                 this.options.lng = place.geometry.location.lng();
-				setTimeout(function(){
-					alert(address);
-				},1000)
+			
 				
             });
 			
@@ -338,7 +336,7 @@ messages: {
                 var state_markers = this.options.markers;
                 var markers_distances = [];
                 var newLocations = [];
-				alert(this.options.lat + ', '+ this.options.lng);
+				//alert(this.options.lat + ', '+ this.options.lng);
       for (let i = 0; i < state_markers.length; i++) {
         
           var d = google.maps.geometry.spherical.computeDistanceBetween(state_markers[i].position, new google.maps.LatLng(this.options.lat, this.options.lng));
@@ -680,7 +678,7 @@ messages: {
 
 showDistance(dealer, maps){
   const str = dealer;
-alert(this.options.lat);
+
         const arr = str.split(',');
   directionsService.route({
     origin: { lat: parseFloat(this.options.lat), lng:  parseFloat(this.options.lng) },
@@ -727,7 +725,7 @@ getDirection(e){
 		var destination = e.getAttribute('data-dealer-address');
 
 		
-        alert(address);
+      
         jQuery('#destination').html(destination);
 		jQuery('#address').html(jQuery('#autocomplete').val());
         jQuery('.content.item').removeClass('active');
