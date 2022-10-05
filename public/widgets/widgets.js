@@ -274,7 +274,6 @@ messages: {
                     position => {
                         this.options.lat = position.coords.latitude;
                         this.options.lng = position.coords.longitude;
-
                         this.getAddressFrom(
                         position.coords.latitude,
                         position.coords.longitude
@@ -288,13 +287,20 @@ messages: {
                         this.error =
                         "Locator is unable to find your address. Please type your address manually.";
                         this.spinner = false;
-                        // console.log(error.message);
+                       console.log(error.message);
+                       
+                       this.initialize( '39.66642412322363', 
+                       '-101.27209401908155',  this.locations);
                     }
                     );
+                    
                 } else {
+                 
                     this.error = error.message;
                     this.spinner = false;
                     console.log("Your browser does not support geolocation API ");
+                   
+                  
                 }
             },
             getAddressFrom(lat, long) {
