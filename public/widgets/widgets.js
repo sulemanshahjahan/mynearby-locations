@@ -290,7 +290,7 @@ messages: {
                        console.log(error.message);
                        
                        this.initialize( '39.66642412322363', 
-                       '-101.27209401908155',  this.locations);
+                       '-101.27209401908155',  this.locations, 3);
                     }
                     );
                     
@@ -425,13 +425,20 @@ messages: {
 					  
 					  
 		},
-		initialize(lat, longs,  dealers){
+		initialize(lat, longs,  dealers, zoom){
       origLat = lat;
       origLng = longs;
 
       $dealers = dealers;
+
+      if(zoom > 0){
+        zoomLevel = zoom;
+      }else{
+        zoomLevel = 14;
+      }
+      
       maps = new google.maps.Map( document.getElementById('map'), {
-        zoom: 13,
+        zoom: zoomLevel,
         animation: google.maps.Animation.DROP,
         mapTypeControlOptions: {
           style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
