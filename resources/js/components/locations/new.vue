@@ -77,19 +77,36 @@
 
     const saveLocation = () => {
 
-        $('.products__create input').each(function(){
+    $('.products__create input[type=text]').each(function(){
             
             if($(this).val() == ''){
                 $(this).addClass('error-border');
+                $(this).parents('.field_box').find('.errorMessage').show();
                 $(this).parents('.field_box').find('.errorMessage').html("This field can't be empty.");
                 $(this).addClass('error');
+                
             }else{
-                $(this).removeClass('error');
-
+                $(this).removeClass('error error-border');
+                $(this).parents('.field_box').find('.errorMessage').hide();
             }
+
+
     })
 
-    if($('error').length < 1){
+
+    if(!$('#sl-cat').val() == 0){
+        $('#sl-cat').removeClass('error error-border');
+        $('#sl-cat').parents('.field_box').find('.errorMessage').hide();
+
+    }else{
+        $('#sl-cat').parents('.field_box').find('.errorMessage').show();
+        $('#sl-cat').parents('.field_box').find('.errorMessage').html("Please choose a category.");
+        $('#sl-cat').addClass('error-border error');
+    }
+
+        alert( $('.error').length );
+
+        if($('.error').length < 1){
         const formData = new FormData();
         formData.append('title', form.value.title);
         formData.append('address', form.value.address);
@@ -124,9 +141,18 @@
 
             })
             .catch((error)=>{
-                console.error(error);
+                if(error.response.status == 300){
+                    $('.lnglat-box .errorMessage').show();
+                    $('.lnglat-box input').addClass('error-border error');
+                    $('.lnglat-box .errorMessage').html('This location already exists.');
+                }else{
+                    $('.lnglat-box input').removeClass('error-border error');
+                    console.log(error);
+                }
             })
         }
+
+    
     }
 
 
@@ -268,7 +294,7 @@ const autocomplete = new google.maps.places.Autocomplete(
     <div class="products__create__titlebar dflex justify-content-between align-items-center" v-if="isSubscribed">
         <div class="products__create__titlebar--item">
             
-            <h1 class="my-1">Add Dealer {{isSubscribed}}</h1>
+            <h1 class="my-1">Add Dealer </h1>
         </div>
         <div class="products__create__titlebar--item">
             
@@ -292,14 +318,14 @@ const autocomplete = new google.maps.places.Autocomplete(
 
                 <div class="field_box">
                 <p class="my-1">Address (optional)</p>
-                <input   class="input" id="specific" ref="el" >
+                <input type="text"   class="input" id="specific" ref="el" >
                 <input  v-model="form.address" name="address" type="hidden" class="input addresss"  >
                 <span class="errorMessage"></span>
                 </div>
                 
                 <div class="field_box">
                 <p class="my-1">Category</p>
-                <select class="input" v-model="form.category_id" >
+                <select class="input sl-cat" id="sl-cat" v-model="form.category_id" >
                     <option disabled value="0">Select option</option>
                     <option v-for="(category, index) in form.categories" :value="category.id" :key="index">{{ category.name }}</option>
                 </select>
@@ -332,7 +358,7 @@ const autocomplete = new google.maps.places.Autocomplete(
                        <li class="products__create__main--media--images--item">
                            <form class="products__create__main--media--images--item--form">
                                <label class="products__create__main--media--images--item--form--label" for="myfile">Add Image</label>
-                               <input class="products__create__main--media--images--item--form--input" type="file" @change="updateMarkerIcon" id="myfile" >
+                               <input class="products__create__main--media--images--item--form--input" type="file" @change="updateMarkerIcon" id="myfile2" >
                            </form>
                        </li>
                    </ul>
@@ -354,7 +380,7 @@ const autocomplete = new google.maps.places.Autocomplete(
                 
                 <!-- Product unit -->
                 <div class="my-3">
-                    <div class="field_box">
+                    <div class="field_box lnglat-box">
                     <p>Longitude and Latitude</p>
                     <input type="text" class="input longlat" name="longlat" v-model="form.longlat" >
                     <span class="errorMessage"></span>

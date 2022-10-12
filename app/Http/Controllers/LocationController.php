@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use App\Models\Locations;
 use App\Models\Category;
 use Image;
@@ -10,10 +11,7 @@ use Image;
 class LocationController extends Controller
 {
     public function get_all_locations(Request $request){
-        $locations = Locations::whereIn('company_id', [$request->company_id])->get();
-        return response()->json([
-            'locations' => $locations
-        ],200);
+        return response()->json(['locations' => Locations::where('company_id', $request->company_id)->paginate(2)], 200);
     }
 
     public function add_location(Request $request){
@@ -31,11 +29,11 @@ class LocationController extends Controller
             $strpos = strpos($request->marker_icon, ';');
             $sub = substr($request->marker_icon,0,$strpos);
             $ex = explode('/',$sub)[1];
-            $name = time().".".$ex;
+            $names = time().".".$ex;
             $img = Image::make($request->marker_icon)->resize(50,50);
             $upload_path = public_path()."/upload/";
-            $img->save($upload_path.$name);
-            $location->marker_icon = $name;
+            $img->save($upload_path.$names);
+            $location->marker_icon = $names;
         }else{
             $location->marker_icon = "marker.png";
         }
@@ -53,7 +51,12 @@ class LocationController extends Controller
             $location->photo = "image.png";
         }
         
-        $location->save();
+        try {
+            $location->save();
+        }catch(\Illuminate\Database\QueryException $ex){ 
+            abort(300,  'Could not create cl or assign it to administrator');
+             // Note any method of class PDOException can be called on $ex.
+           }
     }
     
     public function get_edit_location($id){
@@ -82,10 +85,10 @@ class LocationController extends Controller
             $marker_name = time().".".$ex;
             $img = Image::make($request->marker_icon)->resize(200,200);
             $upload_path = public_path()."/upload/";
-            $image = $upload_path. $location->marker_icon;
+            $image_for_marker = $upload_path. $location->marker_icon;
             $img->save($upload_path.$marker_name);
-            if(file_exists($image)){
-                @unlink($image);
+            if(file_exists($image_for_marker)){
+                @unlink($image_for_marker);
             }
         }else{
             $marker_name = $location->marker_icon;
@@ -116,13 +119,13 @@ class LocationController extends Controller
     public function delete_location($id){
         $location = Locations::findOrFail($id);
         $image_path = public_path()."/upload/";
-        $image = $image_path . $location->photo;
-        $marker_image = $image_path . $location->marker_icon;
-        if(file_exists($image)){
-            @unlink($image);
+        $image_delete = $image_path . $location->photo;
+        $marker_image_delete = $image_path . $location->marker_icon;
+        if(file_exists($image_delete)){
+            @unlink($image_delete);
         }
-        if(file_exists($marker_image)){
-            @unlink($marker_image);
+        if(file_exists($marker_image_delete)){
+            @unlink($marker_image_delete);
         }
 
         $location->delete();

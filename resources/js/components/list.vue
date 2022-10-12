@@ -4,6 +4,7 @@
     <div class="row flex_remove">
         <div class="col side">
           <form class="ui segment large form" @submit.prevent="find_closest_markers">
+            
       <div class="ui segment">
         <div class="field">
           <div class="ui right icon input large padding0" :class="{loading:spinner}">
@@ -44,6 +45,7 @@
 
         <button class="ui button full-width" >Find Nearby</button>
       </div>
+      
     </form>
 
         <div class="locations" v-if="locations && locations.length > 0">
@@ -70,6 +72,7 @@
         <div class="noLocMessage" v-else>
             <h4>No dealers available at this location.</h4>
         </div>
+        <LaravelVuePagination :data="paginationData" @pagination-change-page="getLocations" />
         </div>
         <div class="col">
             <div class="map-parent">
@@ -101,7 +104,7 @@ import Maps from '../services/Maps.js';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex'
 
-   
+
 
 
 
@@ -133,30 +136,18 @@ import dealerCards from './locations/dealerCard.vue';
             radius:900,
             map: null,
             infoWindow: new google.maps.InfoWindow(),
-           
+            api_key: '', 
+            companyID: 0,
+            paginationData: [],
 
           }  
         },
         
-        created( ) {
+        created() {
           const store = useStore();
-          const api_token = 'DrBpXs0VkSPKD6tQCEyMtMGMOwomdYfXgxpWWQlovkAaJuZWaNNpgSpuoG7C';
-          const company_id = 1;
-          axios.get('/api/get_all_locations/?api_token='+ store.state.apiToken +'&company_id=' + store.getters.getCompanyID )
-            .then(response => {
-           
-                this.locations = response.data.locations
-                Maps.initialize(this.lat, this.lng, this.$refs["map"], this.locations)
-                //comp.totalLocations = response.headers['x-total-count'];
-          
-        })
-        .catch(error => {
-            if (error.response && error.response.status == 404) {
-               // next({ name: '404Resource', params: { resource: 'pair' } })
-            } else {
-               // next({ name: 'NetworkError' })
-            }
-        })
+          this.api_key = store.state.apiToken
+          this.companyID = store.getters.getCompanyID;
+         this.getLocations();
 
         this.locatorButtonPressed();
     },
@@ -186,6 +177,27 @@ import dealerCards from './locations/dealerCard.vue';
             this.locatorButtonPressed();
         },
         methods: {
+            getLocations( page = 1){
+             
+          
+          axios.get('/api/get_all_locations/?api_token='+  this.api_key +'&company_id=' + this.companyID + '&page=' + page)
+            .then(response => {
+               
+                this.paginationData = response.data.locations; 
+                this.locations = response.data.locations.data;  
+
+                Maps.initialize(this.lat, this.lng, this.$refs["map"], this.locations)
+                //comp.totalLocations = response.headers['x-total-count'];
+          
+        })
+        .catch(error => {
+            if (error.response && error.response.status == 404) {
+               // next({ name: '404Resource', params: { resource: 'pair' } })
+            } else {
+               // next({ name: 'NetworkError' })
+            }
+        })
+            },
             getLocationNoPermission(){
                 ApiCall.get_raw_location()
                 .then((response) => {

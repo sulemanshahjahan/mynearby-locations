@@ -18,10 +18,11 @@ import { useStore } from 'vuex'
         router.push('/location/new');
     }
     
-    const getLocations = async () => {
+    const getLocations = async (page = 1) => {
         try{
-            let response = await axios.get('/api/get_all_locations/?api_token='+ store.state.apiToken +'&company_id=' + store.getters.getCompanyID );
-            locations.value  = response.data.locations;  
+            let response = await axios.get('/api/get_all_locations/?page='+ page +' +&api_token='+ store.state.apiToken +'&company_id=' + store.getters.getCompanyID );
+            locations.value  = response.data.locations.data;  
+            console.log(response.data.locations);
         }catch (error) {
             console.error(error.response.data);     // NOTE - use "error.response.data` (not "error")
          }
@@ -68,9 +69,10 @@ import { useStore } from 'vuex'
 </script>
 
 <template>
+     s<LaravelVuePagination :data="locations" @pagination-change-page="getLocations" />
     <div class="">
         <div class="products__list table  my-3">
-              
+           
               <div class="customers__titlebar dflex justify-content-between align-items-center">
                   <div class="customers__titlebar--item">
                       <h1 class="my-1">Dealers</h1>
@@ -115,7 +117,8 @@ import { useStore } from 'vuex'
                     </h2>
               </div>
           </div>
-      
+         
+
     </div>
 </template>
 

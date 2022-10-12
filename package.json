@@ -17,6 +17,7 @@
         "@vitejs/plugin-vue": "^3.1.0",
         "bootstrap": "^5.2.1",
         "cors": "^2.8.5",
+        "laravel-vue-pagination": "^3.0.0",
         "requirejs": "^2.3.6",
         "sweetalert2": "^11.4.33",
         "vue": "^3.2.36",

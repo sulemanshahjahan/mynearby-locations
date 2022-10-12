@@ -1,10 +1,10 @@
 import './bootstrap';
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/dist/sweetalert2.css';
-import { createApp } from 'vue';
+import { createApp, VueElement } from 'vue';
 import router from './router.js'
 import store from './store';
-
+import LaravelVuePagination from 'laravel-vue-pagination';
 
 window.Swal = Swal;
 const toast = Swal.mixin({
@@ -29,7 +29,9 @@ import App from './layouts/App.vue'
 
 
 
+
 createApp(App)
+.component("LaravelVuePagination", LaravelVuePagination)
     .use(router)
     .use(store)
     .mount("#app")
